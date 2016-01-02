@@ -1,6 +1,6 @@
 var getConfig = require('hjs-webpack')
 
-module.exports = getConfig({
+var config = getConfig({
 	in: 'src/app.js',
 	out: 'public',
 	clearBeforeBuild: true,
@@ -10,3 +10,19 @@ module.exports = getConfig({
 	},
 	urlLoaderLimit: 100000
 });
+
+console.log('*****************************************************')
+console.log('*****************************************************')
+console.log(config)
+console.log('*****************************************************')
+console.log('*****************************************************')
+console.log(config.plugins)
+console.log('*****************************************************')
+console.log('*****************************************************')
+console.log(config.module.loaders)
+console.log('*****************************************************')
+console.log('*****************************************************')
+console.log(config.entry)
+console.log('*****************************************************')
+console.log('*****************************************************')
+module.exports = config
