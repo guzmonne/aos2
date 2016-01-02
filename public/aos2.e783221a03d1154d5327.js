@@ -1,0 +1,1 @@
+!function(t){function o(n){if(e[n])return e[n].exports;var r=e[n]={exports:{},id:n,loaded:!1};return t[n].call(r.exports,r,r.exports,o),r.loaded=!0,r.exports}var e={};return o.m=t,o.c=e,o.p="/",o(0)}([function(t,o,e){t.exports=e(1)},function(t,o,e){e(2);const n=document.getElementById("root");n.text="Hello World!"},function(t,o){}]);
