@@ -4,7 +4,7 @@
   "description": "Administrador de Ordenes de Servicio",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./node_modules/karma/bin/karma start --single-run=false",
     "prebuild": "rm -r public",
     "build": "set NODE_ENV=production&& webpack",
     "start": "webpack-dev-server"
@@ -48,6 +48,13 @@
     "css-loader": "^0.23.1",
     "file-loader": "^0.8.5",
     "json-loader": "^0.5.4",
+    "karma": "^0.13.16",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-cli": "^0.1.2",
+    "karma-mocha": "^0.2.1",
+    "karma-sourcemap-loader": "^0.3.6",
+    "karma-webpack": "^1.7.0",
+    "mocha": "^2.3.4",
     "postcss-loader": "^0.8.0",
     "style-loader": "^0.13.0",
     "stylus-loader": "^1.4.2",
