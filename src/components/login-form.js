@@ -15,19 +15,35 @@ class LoginForm extends React.Component {
 	}
 
 	render() {
+		const error = this.props.error || {};
+
+		let inputClass = 'form-input', $message = '', {message} = error;
+
+		if (!!message){
+			inputClass = 'form-input input-invalid'
+			$message = ( 
+				<div className="form-element-error">
+					<div className="message message-error">{message}</div>
+				</div>
+			)
+		}
+
 		return (
 			<form onSubmit={this.submitForm}>
 				<fieldset>
 					<legend>Iniciar Sesión</legend>
+					
+					{$message}
+					
 					<div className="form-element">
 						<label>Usuario</label>
-						<input type="text" className="form-input" ref="username"/>
+						<input type="text" className={inputClass} ref="username"/>
 					</div>
 					<div className="form-element">
 						<label>Contraseña</label>
-						<input type="password" className="form-input" ref="password"/>
+						<input type="password" className={inputClass} ref="password"/>
 					</div>
-
+					
 					<button type='submit'
 									className='button button-primary button-block'>
 						Aceptar
