@@ -29,6 +29,7 @@
   "homepage": "https://github.com/guzmonne/aos2#readme",
   "dependencies": {
     "expect": "^1.13.4",
+    "font-awesome": "^4.5.0",
     "hjs-webpack": "^6.0.0",
     "karma-sinon": "^1.0.4",
     "parse": "^1.6.13",

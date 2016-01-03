@@ -1,3 +1,4 @@
+require('../node_modules/font-awesome/css/font-awesome.css');
 require('../styles/override.styl');
 
 import React from 'react'

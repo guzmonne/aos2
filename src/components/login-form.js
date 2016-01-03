@@ -19,6 +19,16 @@ class LoginForm extends React.Component {
 
 		let inputClass = 'form-input', $message = '', {message} = error;
 
+		const $submitButton =	<button	type='submit'
+																	className='button button-primary button-block'>
+														Aceptar
+													</button>
+		const $loginInButton =	<button	className='button button-primary button-block disabled'>
+															<i className="fa fa-spinner fa-spin"></i>
+														</button>
+
+		const $button = (!!this.props.isLoggingIn) ? $loginInButton : $submitButton;
+
 		if (!!message){
 			inputClass = 'form-input input-invalid'
 			$message = ( 
@@ -44,10 +54,7 @@ class LoginForm extends React.Component {
 						<input type="password" className={inputClass} ref="password"/>
 					</div>
 					
-					<button type='submit'
-									className='button button-primary button-block'>
-						Aceptar
-					</button>
+					{$button}
 				</fieldset>
 			</form>
 		);

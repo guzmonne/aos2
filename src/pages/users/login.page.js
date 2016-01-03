@@ -16,7 +16,9 @@ class Login extends React.Component {
 					<div className="grid-flex-cell"></div>
 					<div className="grid-flex-cell grid-flex-cell-1of3">
 
-						<LoginForm onSubmit={this.props.loginUser} error={this.props.currentUser.err}/>
+						<LoginForm 	onSubmit={this.props.loginUser}
+												error={this.props.currentUser.err}
+												isLoggingIn={this.props.currentUser.isLoggingIn}/>
 
 					</div>
 					<div className="grid-flex-cell"></div>
