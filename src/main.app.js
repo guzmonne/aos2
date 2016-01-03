@@ -3,8 +3,9 @@ import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { syncReduxAndRouter } from 'redux-simple-router'
 import { store } from './state/store.js'
-import MainApp from './main-app.js'
+import MainLayout from './pages/default/main.layout'
 import Login from './pages/users/login.page.js'
+import Dashboard from './pages/dashboard/dashboard.js'
 
 syncReduxAndRouter(browserHistory, store)
 
@@ -18,8 +19,11 @@ class App extends React.Component {
 		return (
 			<Provider store={store}>
 				<Router history={browserHistory}>
-					<Route path="/" component={MainApp} />
-					<Route path="/users/login" component={Login} />
+					<Route path="/" component={MainLayout}>
+						<Route path="dashboard"
+									 component={Dashboard}></Route>
+					</Route>
+					<Route path="users/login" component={Login} />
 				</Router>
 			</Provider>
 		)

@@ -23,7 +23,7 @@ class LoginForm extends React.Component {
 																	className='button button-primary button-block'>
 														Aceptar
 													</button>
-		const $loginInButton =	<button	className='button button-primary button-block disabled'>
+		const $loginInButton =	<button	className='button button-primary button-block' disabled>
 															<i className="fa fa-spinner fa-spin"></i>
 														</button>
 

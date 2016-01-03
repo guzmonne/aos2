@@ -1,6 +1,28 @@
 @import 'yeticss'
 @import './variables.styl'
 @import './buttons.styl'
+@import './helpers.styl'
+@import './nav-bar.styl'
 
 .form-element-error
 	margin-bottom $pad
+	
+.grid-flex-container
+	margin-left $pad
+	margin-right $pad
+	
+@media screen and (max-width: 768px)
+	.top-nav
+		background-color $blue
+	
+	.button-outlined, .button-outlined:hover, li.app-name
+		background-color white
+		
+	li.app-name a
+		color $blue
+	
+	li.app-name
+		text-align center
+
+	.float-right
+		float: none		
