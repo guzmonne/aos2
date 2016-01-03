@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router'
 
 export default ({username, onLogout}) => {
 	username || (username = "ChangeMe")
@@ -45,6 +46,11 @@ export default ({username, onLogout}) => {
 							<a onClick={onLogout}>Logout</a>
 						</li>
 					</ul>
+				</li>
+				<li className="float-right">
+					<Link to="configuration">
+						<i className="fa fa-cog"></i>
+					</Link>
 				</li>
 			</ul>
 		</nav>	

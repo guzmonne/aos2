@@ -42,7 +42,7 @@ export function loginUser(username, password){
 	return dispatch => {
 		const handleSuccess = () => {
 			dispatch(loginSuccess(deserializeCurrent()))
-			dispatch(pushPath('/dashboard'));
+			dispatch(pushPath('/'));
 		}
 		const handleError = (err) => dispatch(loginError(err))
 
