@@ -1,13 +1,10 @@
 import expect from 'expect'
 import {store} from './store.js'
 
-describe('store', () => {
+describe('Store', () => {
 
 	it('should initialize', () => {
 		const actual = store.getState();
-
-		console.log(store.getState())
-
 		const expected = {
 			counter: 0,
 			routing: { 
@@ -15,6 +12,10 @@ describe('store', () => {
 				path: undefined, 
 				replace: false, 
 				state: undefined
+			},
+			currentUser: {
+				isLoggingIn: false,
+				err: false
 			}
 		}
 

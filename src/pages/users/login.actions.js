@@ -2,20 +2,19 @@ import {LOGGING_IN_USER, LOGIN_SUCCESS, LOGIN_ERROR} from '../../state/action-ty
 import Parse from 'parse'
 
 
-function loggingInUser(){
+export function loggingInUser(){
 	return {
 		type: LOGGING_IN_USER
 	}
 }
 
-function loginSuccess(user={username: 'test'}){
+export function loginSuccess(){
 	return {
-		type: LOGIN_SUCCESS,
-		user
+		type: LOGIN_SUCCESS
 	}
 }
 
-function loginError(err={message: 'something is wrong'}){
+export function loginError(err={message: 'something is wrong'}){
 	return {
 		type: LOGIN_ERROR,
 		err
@@ -24,7 +23,7 @@ function loginError(err={message: 'something is wrong'}){
 
 export function loginUser(username, password){
 	return dispatch => {
-		const handleSuccess = (user) => dispatch(loginSuccess(user))
+		const handleSuccess = () => dispatch(loginSuccess())
 		const handleError = (err) => dispatch(loginError(err))
 
 		dispatch(loggingInUser());

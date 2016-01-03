@@ -4,7 +4,7 @@ module.exports = function(config){
 	config.set({
 		browsers: ['Chrome'],
 		singleRun: true,
-		frameworks: ['mocha'],
+		frameworks: ['mocha', 'sinon'],
 		files: [
       'tests.webpack.js' //just load this file
     ],
@@ -16,7 +16,8 @@ module.exports = function(config){
 			devtool: 'inline-source-map',
 			module: {
 				loaders: [
-					{ test: /\.js$/, loader: 'babel-loader' }
+					{ test: /\.js$/, loader: 'babel-loader' },
+					{ test: /sinon\.js$/, loader: "imports?define=>false,require=>false" }
 				]
 			}
 		},
