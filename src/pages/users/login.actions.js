@@ -4,7 +4,7 @@ import Parse from 'parse'
 
 function deserializeCurrent(){
 	if (!Parse.User.current()) return {}
-	return JSON.parse(JSON.stringify(Parse.User.current()))
+	return Parse.User.current().attributes
 }
 
 export function restoreLoginSessionToken(){

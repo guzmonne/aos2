@@ -4,6 +4,7 @@ import { store } from '../../state/store.js'
 import { Tabs, Tab, TabContainer } from '../../components/tabs.js'
 import { changeConfigurationTab } from './configuration.actions.js'
 import Account from '../../components/configuration/account.js'
+import Users from '../../components/configuration/users.js'
 
 class Configuration extends React.Component {
 	constructor(props) {
@@ -23,7 +24,7 @@ class Configuration extends React.Component {
 		const tabsArray = [
 			{name: 'general', txt: 'General', component: <div>General</div> },
 			{name: 'account', txt: 'Cuenta', component: <Account /> },
-			{name: 'users', txt: 'Usuarios', component: <div>Usuarios</div> }
+			{name: 'users', txt: 'Usuarios', component: <Users /> }
 		];
 
 		return (

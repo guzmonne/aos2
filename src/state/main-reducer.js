@@ -3,6 +3,7 @@ import counterReducer from '../counter.reducer.js'
 import loginReducer from '../pages/users/login.reducer.js'
 import configurationReducer from '../pages/default/configuration.reducer.js'
 import accountReducer from '../components/configuration/account.reducer.js'
+import usersReducer from '../components/configuration/users.reducer.js'
 
 export default function mainReducer( state={}, action){
 	return {
@@ -10,6 +11,7 @@ export default function mainReducer( state={}, action){
 		routing: routeReducer(state.routing, action),
 		currentUser: loginReducer(state.currentUser, action),
 		configuration: configurationReducer(state.configuration, action),
-		account: accountReducer(state.account, action)
+		account: accountReducer(state.account, action),
+		users: usersReducer(state.users, action)
 	}
 }

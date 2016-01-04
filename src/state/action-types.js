@@ -15,10 +15,16 @@ export const LOGOUT_USER     = 'LOGOUT_USER'
 /***************************************************/
 export const CHANGE_CONFIGURATION_TAB = 'CHANGE_CONFIGURATION_TAB'
 /***************************************************/
-/* ACCOUNTS                                        */
+/* ACCOUNT                                         */
 /***************************************************/
 export const ENABLE_ACCOUNT_EDITION  = 'ENABLE_ACCOUNT_EDITION'
 export const DISABLE_ACCOUNT_EDITION = 'DISABLE_ACCOUNT_EDITION'
 export const UPDATING_ACCOUNT        = 'UPDATING_ACCOUNT'
 export const ACCOUNT_UPDATE_SUCCESS  = 'ACCOUNT_UPDATE_SUCCESS'
 export const ACCOUNT_UPDATE_ERROR    = 'ACCOUNT_UPDATE_ERROR'
+/***************************************************/
+/* USERS                                           */
+/***************************************************/
+export const FETCHING_USERS      = 'FETCHING_USERS'
+export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS'
+export const FETCH_USERS_ERROR   = 'FETCH_USERS_ERROR'
