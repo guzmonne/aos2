@@ -1,4 +1,5 @@
 import React from 'react';
+import FormElementError from './form-element-error.js'
 
 class LoginForm extends React.Component {
 	constructor(props) {
@@ -10,7 +11,6 @@ class LoginForm extends React.Component {
 	submitForm(e){
 		e.preventDefault();
 		const {username, password} = this.refs;
-		console.log(username.value, password.value)
 		this.props.onSubmit(username.value, password.value);
 	}
 
@@ -31,11 +31,7 @@ class LoginForm extends React.Component {
 
 		if (!!message){
 			inputClass = 'form-input input-invalid'
-			$message = ( 
-				<div className="form-element-error">
-					<div className="message message-error">{message}</div>
-				</div>
-			)
+			$message = <FormElementError message={message} />
 		}
 
 		return (

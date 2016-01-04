@@ -25,8 +25,7 @@ export default function accountReducer (state=defaultState, action){
 		case ACCOUNT_UPDATE_SUCCESS:
 			return Object.assign(
 				{},
-				state,
-				{ updating: false }
+				defaultState
 			)
 		case ACCOUNT_UPDATE_ERROR:
 			return Object.assign(

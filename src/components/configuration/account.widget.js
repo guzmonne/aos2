@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash'
 import { SaveButton, EditButton, CancelButton } from '../buttons.js'
+import FormElementError from '../form-element-error.js'
 
 class AccountWidget extends React.Component {
 	constructor(props) {
@@ -23,16 +24,20 @@ class AccountWidget extends React.Component {
 				email: this.refs.email.value
 			}
 
-			console.log(data)
-
 			this.props.onSave(data)
 		}
 
+		const errorMessage = (this.props.error) ?
+			<FormElementError message={this.props.error.message} /> :
+			''
+ 
 		return (
 			<div className="container">
 				<form onSubmit={submit}>
 					<fieldset>
 						<legend>Cuenta</legend>
+
+						{errorMessage}
 
 						<div className="form-element">
 							<label htmlFor="name">Nombre</label>
@@ -51,7 +56,7 @@ class AccountWidget extends React.Component {
 
 						&nbsp;
 
-						<SaveButton loading={this.props.updating} onClick={submit} disabled={!this.props.editable || this.props.loading}/>
+						<SaveButton loading={this.props.updating} onClick={submit} disabled={!this.props.editable || this.props.updating}/>
 
 					</fieldset>
 				</form>

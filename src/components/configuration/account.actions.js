@@ -30,8 +30,8 @@ export function updateAccount(data){
 		}
 
 		const handleError = error => {
-			dispatch(accountUpdateError(error))
 			dispatch(enableAccountEdition())
+			dispatch(accountUpdateError(error))
 		}
 
 		dispatch(updatingAccount())
@@ -59,6 +59,6 @@ export function accountUpdateSuccess(){
 export function accountUpdateError(error){
 	return {
 		type: ACCOUNT_UPDATE_ERROR,
-		error
+		error: error
 	}
 }
