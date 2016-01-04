@@ -1,28 +1,27 @@
 import React from 'react'
 
 const loading = <i className="fa fa-spinner fa-spin"></i>
-const buildHtml = (html, isLoading) => (!!isLoading) ? loading : html;
 
 export function EditButton(props){
-	const html = buildHtml(<span><i className="fa fa-pencil"></i>&nbsp;Editar</span>, props.loading)
-	
 	return 	<button {...props} className="button button-warning">
-						{html}
+						{props.loading ? loading : <span><i className="fa fa-pencil"></i>&nbsp;Editar</span>}
 					</button>
 }
 
 export function CancelButton(props){
-	const html = buildHtml(<span><i className="fa fa-times"></i>&nbsp;Cancelar</span>, props.loading)
-	
 	return 	<button {...props} className="button button-neutral">
-						{html}
+						{props.loading ? loading : <span><i className="fa fa-times"></i>&nbsp;Cancelar</span>}
 					</button>
 }
 
 export function SaveButton(props){
-	const html = buildHtml(<span><i className="fa fa-floppy-o"></i>&nbsp;Guardar</span>, props.loading)
-
 	return 	<button {...props} className="button">
-						{html}
+						{props.loading ? loading : <span><i className="fa fa-floppy-o"></i>&nbsp;Guardar</span>}
+					</button>
+}
+
+export function UpdateButton (props){
+	return	<button {...props} className="button">
+						{props.loading ?  loading : 'Actualizar'}
 					</button>
 }
