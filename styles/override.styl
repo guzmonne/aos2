@@ -3,6 +3,7 @@
 @import './buttons.styl'
 @import './helpers.styl'
 @import './nav-bar.styl'
+@import './tabs.styl'
 
 .form-element-error
 	margin-bottom $pad
@@ -25,20 +26,7 @@
 		text-align center
 
 	.float-right
-		float: none		
-		
-.container-fluid
-	width 100%
-	padding-right $pad
-	padding-left $pad
+		float: none
 	
-.tab-body
-	padding-right $pad
-	padding-left $pad
-	border-bottom 2px solid #e6eaed
-	border-left 2px solid #e6eaed
-	border-right 2px solid #e6eaed
-	margin-top -($pad)
-	
-ul.tabs
-	margin-bottom $pad
+nav.top-nav ul
+	z-index 20

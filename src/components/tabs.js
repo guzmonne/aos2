@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Tabs({tabComponent, children}) {
+export function Tabs({style, tabComponent, children}) {
 	return (
 		<div className="container container-fluid">
 			<nav>
@@ -8,7 +8,7 @@ export function Tabs({tabComponent, children}) {
 					{children}
 				</ul>
 			</nav>
-			<div className="tab-body">
+			<div className="tab-body" style={style}>
 				{tabComponent}
 			</div>
 		</div>
@@ -28,9 +28,7 @@ export function Tab({name, active, children, onActivate}){
 	)
 }
 
-export function TabContainer ({tabs, activeTab, onActivate}) {
-	console.log(activeTab)
-
+export function TabContainer ({style, tabs, activeTab, onActivate}) {
 	const isTabActive = tabName => tabName === activeTab
 
 	const _tabs = tabs.map(tab => (
@@ -44,6 +42,6 @@ export function TabContainer ({tabs, activeTab, onActivate}) {
 
 	const tabComponent = tabs.filter(tab => isTabActive(tab.name))[0].component
 
-	return <Tabs tabComponent={tabComponent}>{_tabs}</Tabs>
+	return <Tabs style={style} tabComponent={tabComponent}>{_tabs}</Tabs>
 
 }

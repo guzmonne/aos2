@@ -17,7 +17,7 @@ export default ({username, onLogout}) => {
 
 			<ul className="list-unstyled list-inline cf">
 				<li className="app-name">
-					<a>AOS</a>
+					<Link to="/">AOS</Link>
 				</li>
 				<li className="has-dropdown">
 					<a>Clientes</a>
