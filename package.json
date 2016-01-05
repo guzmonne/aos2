@@ -7,7 +7,8 @@
     "test": "node ./node_modules/karma/bin/karma start --single-run=false",
     "prebuild": "rm -r public",
     "build": "set NODE_ENV=production&& webpack",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "surge": "set NODE_ENV=production&& webpack&& cd public&& surge"
   },
   "repository": {
     "type": "git",

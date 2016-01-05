@@ -8,7 +8,13 @@ var config = getConfig({
 	output: {
 		hash: true,
 	},
-	urlLoaderLimit: 100000
+	urlLoaderLimit: 100000,
+	html: function(context){
+		return {
+			'index.html': context.defaultTemplate(),
+			'CNAME': 'aos.info.tm'
+		}
+	}
 });
 
 module.exports = config
