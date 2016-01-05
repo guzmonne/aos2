@@ -26,7 +26,7 @@ export function updateAccount(data){
 		const handleSuccess = () => {
 			const user = Parse.User.current();
 			dispatch(accountUpdateSuccess());
-			dispatch(loginSuccess(JSON.parse( JSON.stringify(user) )))
+			dispatch(loginSuccess(user.attributes))
 		}
 
 		const handleError = error => {

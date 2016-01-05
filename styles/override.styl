@@ -4,6 +4,10 @@
 @import './helpers.styl'
 @import './nav-bar.styl'
 @import './tabs.styl'
+@import './modals.styl'
+
+.overlay
+	overflow auto
 
 .form-element-error
 	margin-bottom $pad
@@ -35,3 +39,6 @@ nav.top-nav ul
 	min-width 100px
 	background-color white
 	z-index 90
+	
+tr.animated
+	animation-fill-mode: none;

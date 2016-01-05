@@ -32,8 +32,7 @@ class Configuration extends React.Component {
 				<h3 className="align-container-padding-1x">Configuración</h3>
 				<TabContainer tabs={tabsArray}
 											activeTab={tabName}
-											onActivate={changeConfigurationTab}
-											style={{ minHeight: '300px' }}/>
+											onActivate={changeConfigurationTab}/>
 			</div>
 		)
 	}

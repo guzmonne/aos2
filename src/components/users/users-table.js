@@ -35,7 +35,7 @@ function UserRow ({user, onDelete}) {
 	}
 
 	return (
-		<tr>
+		<tr className="animated fadeIn">
       <td>{user.id}</td>
       <td>{user.get('name')}</td>
       <td>{user.getUsername()}</td>

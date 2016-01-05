@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash'
 import { SaveButton, EditButton, CancelButton } from '../buttons.js'
 import FormElementError from '../form-element-error.js'
 

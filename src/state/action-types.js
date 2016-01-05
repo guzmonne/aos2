@@ -1,4 +1,9 @@
 /***************************************************/
+/* MAIN LAYOUT                                     */
+/***************************************************/
+export const SHOW_MODAL_OVERLAY = 'SHOW_MODAL_OVERLAY'
+export const HIDE_MODAL_OVERLAY = 'HIDE_MODAL_OVERLAY'
+/***************************************************/
 /* COUNTER                                         */
 /***************************************************/
 export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
@@ -25,6 +30,11 @@ export const ACCOUNT_UPDATE_ERROR    = 'ACCOUNT_UPDATE_ERROR'
 /***************************************************/
 /* USERS                                           */
 /***************************************************/
-export const FETCHING_USERS      = 'FETCHING_USERS'
-export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS'
-export const FETCH_USERS_ERROR   = 'FETCH_USERS_ERROR'
+export const FETCHING_USERS            = 'FETCHING_USERS'
+export const FETCH_USERS_SUCCESS       = 'FETCH_USERS_SUCCESS'
+export const FETCH_USERS_ERROR         = 'FETCH_USERS_ERROR'
+export const SHOWING_CREATE_USER_MODAL = 'SHOWING_CREATE_USER_MODAL'
+export const HIDING_CREATE_USER_MODAL  = 'HIDING_CREATE_USER_MODAL'
+export const CREATING_USER             = 'CREATING_USER'
+export const USER_CREATE_SUCCESS       = 'USER_CREATE_SUCCESS'
+export const USER_CREATE_ERROR         = 'USER_CREATE_ERROR'

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { restoreLoginSessionToken } from '../users/login.actions.js'
 import { store } from '../../state/store'
 import NavBar from './nav-bar.js'
+import { showModalOverlay, hideModalOverlay } from './main.layout.actions.js'
 
 class MainLayout extends React.Component {
 	constructor(props) {
@@ -15,8 +16,10 @@ class MainLayout extends React.Component {
 	}
 
 	render() {
+		const overlay = (this.props.mainLayout.isShowingOverlay) ? 'overlay has-modal' : 'overlay'
+
 		return (
-			<div>
+			<div className={overlay}>
 				<NavBar />
 				{this.props.children}
 			</div>
@@ -24,4 +27,20 @@ class MainLayout extends React.Component {
 	}
 }
 
-export default MainLayout
+MainLayout.propTypes = {
+	mainLayout: React.PropTypes.object
+}
+
+function select(state){
+	return {
+		mainLayout: state.mainLayout
+	}
+}
+
+export default connect(
+	select,
+	{
+		showModalOverlay,
+		hideModalOverlay
+	}
+)(MainLayout)

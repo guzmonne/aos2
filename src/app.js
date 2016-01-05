@@ -1,3 +1,4 @@
+require('../styles/css/animate.css');
 require('../node_modules/font-awesome/css/font-awesome.css');
 require('../styles/override.styl');
 
