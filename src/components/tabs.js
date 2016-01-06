@@ -2,9 +2,9 @@ import React from 'react'
 
 export function Tabs({style, tabComponent, children}) {
 	return (
-		<div className="container container-fluid">
+		<div className="container-fluid">
 			<nav>
-				<ul className="list-unstyled list-inline tabs">
+				<ul className="nav nav-tabs">
 					{children}
 				</ul>
 			</nav>
@@ -16,7 +16,7 @@ export function Tabs({style, tabComponent, children}) {
 }
 
 export function Tab({name, active, children, onActivate}){
-	const activeClass = (!!active) ? 'current-item' : '';
+	const activeClass = (!!active) ? 'active' : '';
 	const activate = () => onActivate(name)
 
 	return (

@@ -7,18 +7,26 @@ const CreateUserModal = (props) => {
 		props.close()
 	}
 
+	const className = (props.modalIn) ? "modal fade in" : "modal fade in hidden" 
+
 	return (
-		<div className='modal modal-no-sections modal__animated animated flipInX'>
-      <div className="modal-align-form">
-	      <a href='' className='modal-close' onClick={onClose}>×</a>
-	  		<UserForm user={props.user}
-	  							isNew={true}
-	  							onSave={props.onSave} 
-	  							legend={"Nuevo Usuario"}
-	  							showPasswordInput={true}
-	  							updating={props.updating}
-	  							error={props.error}/>
-      </div>
+		<div className={className}>
+			<div className="modal-dialog">
+      	<div className="modal-content">
+	      	<div className="modal-body">
+			      <button className='close' aria-label="Close" onClick={onClose}>
+			      	<span aria-hidden="true">×</span>
+			      </button>
+						<UserForm user={props.user}
+											isNew={true}
+											onSave={props.onSave} 
+											legend={"Nuevo Usuario"}
+											showPasswordInput={true}
+											updating={props.updating}
+											error={props.error}/>
+      		</div>
+      	</div>
+			</div>
 	  </div>
 	)
 }

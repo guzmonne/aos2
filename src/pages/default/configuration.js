@@ -30,6 +30,7 @@ class Configuration extends React.Component {
 		return (
 			<div className="container container-fluid">
 				<h3 className="align-container-padding-1x">Configuración</h3>
+				<hr/>
 				<TabContainer tabs={tabsArray}
 											activeTab={tabName}
 											onActivate={changeConfigurationTab}/>

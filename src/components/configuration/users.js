@@ -36,26 +36,26 @@ class Users extends React.Component {
 	render() {
 		const user = {name: '', username: '', email: ''}
 		const {users, toggleCreateUserModal, createUser} = this.props
-		const modalComponent = (
-			<CreateUserModal 	close={toggleCreateUserModal}
-												user={user}
-												onSave={createUser}
-												updating={users.isCreatingUser}
-												error={users.createUserError}/>
-		)
-		const modal = users.isShowingCreateModal ? modalComponent : ''
+		const {isShowingCreateModal} = this.props.users
 		const showModal = () => this.props.toggleCreateUserModal()
+		const $modal = <CreateUserModal 	close={toggleCreateUserModal}
+													user={user}
+													onSave={createUser}
+													updating={users.isCreatingUser}
+													error={users.createUserError}
+													modalIn={isShowingCreateModal}/>
 
 		return (
 			<div className="container container-fluid">
 				<UpdateButton onClick={this.update} loading={this.props.users.isFetching}/>
-
 				<CreateButton className="float-right" onClick={showModal}>Nuevo Usuario</CreateButton>
+
+				<hr/>
 
 				<UsersTable onDelete={(user) => console.log(user)}
 										users={users.collection}/>
 
-				{modal}
+				{isShowingCreateModal ? $modal : null}
 			</div>	
 		);
 	}

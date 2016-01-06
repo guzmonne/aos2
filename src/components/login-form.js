@@ -17,41 +17,37 @@ class LoginForm extends React.Component {
 	render() {
 		const error = this.props.error || {};
 
-		let inputClass = 'form-input', $message = '', {message} = error;
+		let inputClass = 'form-control', $message = '', {message} = error;
 
 		const $submitButton =	<button	type='submit'
-																	className='button button-primary button-block'>
+																	className='btn btn-primary btn-block'>
 														Aceptar
 													</button>
-		const $loginInButton =	<button	className='button button-primary button-block' disabled>
+		const $loginInButton =	<button	className='btn btn-primary btn-block' disabled>
 															<i className="fa fa-spinner fa-spin"></i>
 														</button>
 
 		const $button = (!!this.props.isLoggingIn) ? $loginInButton : $submitButton;
 
 		if (!!message){
-			inputClass = 'form-input input-invalid'
-			$message = <FormElementError message={message} />
+			inputClass = 'form-control error'
+			$message = <label htmlFor="username" className="error">{message}</label>
 		}
 
 		return (
 			<form onSubmit={this.submitForm}>
-				<fieldset>
-					<legend>Iniciar Sesión</legend>
-					
-					{$message}
-					
-					<div className="form-element">
-						<label>Usuario</label>
-						<input type="text" className={inputClass} ref="username"/>
-					</div>
-					<div className="form-element">
-						<label>Contraseña</label>
-						<input type="password" className={inputClass} ref="password"/>
-					</div>
-					
-					{$button}
-				</fieldset>
+				
+				<div className="form-group">
+					<label forHtml="username">Usuario</label>
+					<input placeholder="Usuario" type="text" className={inputClass} ref="username"/>
+				</div>
+				<div className="form-group">
+					<label forHtml="password">Contraseña</label>
+					<input placeholder="Contraseña" type="password" className={inputClass} ref="password"/>
+				</div>
+
+				{$button}
+			
 			</form>
 		);
 	}

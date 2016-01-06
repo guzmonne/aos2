@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { restoreLoginSessionToken } from '../users/login.actions.js'
 import { store } from '../../state/store'
 import NavBar from './nav-bar.js'
-import { showModalOverlay, hideModalOverlay } from './main.layout.actions.js'
+import Sidebar from './side-bar.js'
+import { hideAll, showModalOverlay, hideModalOverlay } from './main.layout.actions.js'
 
 class MainLayout extends React.Component {
 	constructor(props) {
@@ -16,12 +17,33 @@ class MainLayout extends React.Component {
 	}
 
 	render() {
-		const overlay = (this.props.mainLayout.isShowingOverlay) ? 'overlay has-modal' : 'overlay'
+		const {hideAll} = this.props
+		const {isShowingOverlay, isShowingNavBarMenu} = this.props.mainLayout
+		const modalOpen = isShowingOverlay ? 'outer modal-open' : 'outer'
+		const {username} = this.props.currentUser
+
+		const onHideAll = (e) => {
+			console.log(e.target)
+			if (isShowingOverlay || isShowingNavBarMenu)
+				hideAll()
+		}
+
+		const overlay = <div className="modal-backdrop fade in"></div>
 
 		return (
-			<div className={overlay}>
-				<NavBar />
-				{this.props.children}
+			<div className={modalOpen} >
+				<div className="sidebar">
+					<Sidebar username={username}/>
+				</div>
+				<div className="mainbar">
+					<div className="main-head">
+						<NavBar />
+					</div>
+					<div className="main-content">
+						{this.props.children}
+					</div>
+				</div>
+				{isShowingOverlay ? overlay : null}
 			</div>
 		);
 	}
@@ -33,14 +55,14 @@ MainLayout.propTypes = {
 
 function select(state){
 	return {
-		mainLayout: state.mainLayout
+		mainLayout: state.mainLayout,
+		currentUser: state.currentUser
 	}
 }
 
 export default connect(
 	select,
 	{
-		showModalOverlay,
-		hideModalOverlay
+		hideAll
 	}
 )(MainLayout)

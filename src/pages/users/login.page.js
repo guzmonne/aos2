@@ -11,19 +11,18 @@ class Login extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<div className="grid-flex-container">
-					<div className="grid-flex-cell"></div>
-					<div className="grid-flex-cell grid-flex-cell-1of3">
+			<div className="outer-page">
+				<div className="login-page">
+					<div className="tab-content">
+						<div className="tab-pane fade active in" id="login">
 
-						<LoginForm 	onSubmit={this.props.loginUser}
-												error={this.props.currentUser.err}
-												isLoggingIn={this.props.currentUser.isLoggingIn}/>
-
+							<LoginForm 	onSubmit={this.props.loginUser}
+													error={this.props.currentUser.err}
+													isLoggingIn={this.props.currentUser.isLoggingIn}/>
+						
+						</div>
 					</div>
-					<div className="grid-flex-cell"></div>
 				</div>
-				<div className="grid-flex-container"></div>
 			</div>
 		);
 	}

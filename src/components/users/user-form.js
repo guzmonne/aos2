@@ -1,6 +1,9 @@
 import React from 'react'
 import { SaveButton, EditButton, CancelButton } from '../buttons.js'
 import FormElementError from '../form-element-error.js'
+import {FormGroup} from '../form.js'
+
+
 
 class UserForm extends React.Component {
 	constructor(props) {
@@ -9,11 +12,13 @@ class UserForm extends React.Component {
 	}	
 
 	render(){
-		const isDisabled = !this.props.isNew && !this.props.editable
+		const {user, error, isNew, editable, updating, onCancel, onEdit, showPasswordInput} = this.props
+
+		const isDisabled = !isNew && !editable
 
 		const toggledButton = (this.props.editable) ? 
-			<CancelButton loading={this.props.updating} onClick={this.props.onCancel} style={{float: 'right'}}/> :
-			<EditButton loading={this.props.updating} onClick={this.props.onEdit} style={{float: 'right'}} disabled={this.props.updating}/>
+			<CancelButton loading={updating} onClick={onCancel} style={{float: 'right'}}/> :
+			<EditButton loading={updating} onClick={onEdit} style={{float: 'right'}} disabled={updating}/>
 
 		const submit = e => {
 			e.preventDefault()
@@ -28,44 +33,48 @@ class UserForm extends React.Component {
 			this.props.onSave(data)
 		}
 
-		const errorMessage = (this.props.error) ?
-			<FormElementError message={this.props.error.message} /> :
+		const errorMessage = (error) ?
+			<FormElementError message={error.message} /> :
 			''
 
 		const passwordInput = (
-			<div className="form-element">
-				<label htmlFor="password">Contraseña</label>
-				<input type="password" className="form-input" ref="password" disabled={isDisabled}/>
+			<div className="form-group">
+				<label htmlFor="password" className="control-label col-lg-2">Contraseña</label>
+				<div className="col-lg-10">
+					<input type="password" className="form-control" ref="password" disabled={isDisabled}/>
+				</div>
 			</div>
 		)
 
 		return (
-			<form onSubmit={submit}>
-				<fieldset>
-					<legend>{this.props.legend}</legend>
+			<form className="form-horizontal" onSubmit={submit}>
+				<legend>{this.props.legend}</legend>
+				{errorMessage}
 
-					{errorMessage}
-
-					<div className="form-element">
-						<label htmlFor="name">Nombre</label>
-						<input type="text" className="form-input" ref="name" defaultValue={this.props.user.name} disabled={isDisabled}/>
+				<div className="form-group">
+					<label htmlFor="name" className="control-label col-lg-2">Nombre</label>
+					<div className="col-lg-10">
+						<input type="text" className={error ? "form-control error" : "form-control"} ref="name" defaultValue={user.name} disabled={isDisabled}/>
 					</div>
-					<div className="form-element">
-						<label htmlFor="username">Usuario</label>
-						<input type="text" className="form-input" ref="username" defaultValue={this.props.user.username} disabled={!this.props.isNew}/>
+				</div>
+				<div className="form-group">
+					<label htmlFor="username" className="control-label col-lg-2">Usuario</label>
+					<div className="col-lg-10">
+						<input type="text" className={error ? "form-control error" : "form-control"} ref="username" defaultValue={user.username} disabled={!isNew}/>
 					</div>
-					<div className="form-element">
-						<label htmlFor="email">Email</label>
-						<input type="email" className="form-input" ref="email" defaultValue={this.props.user.email} disabled={isDisabled}/>
+				</div>
+				<div className="form-group">
+					<label htmlFor="email" className="control-label col-lg-2">Email</label>
+					<div className="col-lg-10">
+						<input type="email" className={error ? "form-control error" : "form-control"} ref="email" defaultValue={user.email} disabled={isDisabled}/>
 					</div>
+				</div>
 
-					{this.props.showPasswordInput ? passwordInput : null}
+				{showPasswordInput ? passwordInput : null}
 
-					{this.props.isNew ? null : toggledButton}
+				{isNew ? null : toggledButton}
 
-					<SaveButton loading={this.props.updating} onClick={submit} disabled={!this.props.isNew && (!this.props.editable || this.props.updating)}/>
-
-				</fieldset>
+				<SaveButton loading={updating} onClick={submit} disabled={!isNew && (!editable || updating)}/>
 			</form>
 		)
 	}
@@ -74,6 +83,5 @@ class UserForm extends React.Component {
 UserForm.propTypes = {
 	user: React.PropTypes.object.isRequired
 }
-
 
 export default UserForm

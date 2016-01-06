@@ -20,14 +20,18 @@ class Account extends React.Component {
 
 		return (
 			<div className="container">
-				<UserForm	user={this.props.currentUser}
-									editable={account.editable}
-									onEdit={enableAccountEdition}
-									onCancel={disableAccountEdition}
-									onSave={updateAccount}
-									updating={account.updating}
-									error={account.error}
-									legend={"Cuenta"}/>
+				<div className="row">
+					<div className="col-sm-6 col-sm-offset-3">
+						<UserForm	user={this.props.currentUser}
+											editable={account.editable}
+											onEdit={enableAccountEdition}
+											onCancel={disableAccountEdition}
+											onSave={updateAccount}
+											updating={account.updating}
+											error={account.error}
+											legend={"Cuenta"}/>
+					</div>
+				</div>
 			</div>
 		);
 	}

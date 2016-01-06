@@ -1,4 +1,3 @@
-@import 'yeticss'
 @import './variables.styl'
 @import './buttons.styl'
 @import './helpers.styl'
@@ -41,4 +40,19 @@ nav.top-nav ul
 	z-index 90
 	
 tr.animated
-	animation-fill-mode: none;
+	animation-fill-mode none
+	
+.nav-tabs>li.active>a
+	background-color $blue-dark
+	border-color $blue-darker
+	color #fff
+	
+.nav-tabs>li.active>a:hover
+	background-color $blue-darker
+	border-color $blue-darker
+	cursor: pointer
+
+.nav-tabs>li>a:hover
+	background-color $blue-light
+	border-color $blue
+	cursor: pointer
