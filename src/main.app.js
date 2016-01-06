@@ -7,6 +7,7 @@ import MainLayout from './pages/default/main.layout'
 import Login from './pages/users/login.page.js'
 import Dashboard from './pages/default/dashboard.js'
 import Configuration from './pages/default/configuration.js'
+import Clients from './pages/clients/clients.js'
 
 syncReduxAndRouter(browserHistory, store)
 
@@ -23,6 +24,7 @@ class App extends React.Component {
 					<Route path="/" component={MainLayout}>
 						<IndexRoute component={Dashboard} />
 						<Route path="configuration" component={Configuration} />
+						<Route path="clients" component={Clients} />
 					</Route>
 					<Route path="users/login" component={Login} />
 				</Router>
