@@ -1,5 +1,6 @@
 import React from 'react'
 import Table from '../table.js'
+import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 
 const Clients = ({clients}) => {
 	const thead = <tr>
@@ -10,6 +11,8 @@ const Clients = ({clients}) => {
 									<th>Direcciones</th>
 									<th className="text-center"><i className="fa fa-ellipsis-h"></i></th>
 								</tr>
+	const editTooltip = <Tooltip id="editClient">Editar</Tooltip>
+	const newServiceRequestTooltip = <Tooltip id="newServiceRequest">Nueva Orden de Servicio</Tooltip>
 
 	const Tr = ({client}) => {
 		return (
@@ -22,15 +25,19 @@ const Clients = ({clients}) => {
 				<td className="text-center">
 					<div className="btn-toolbar btn-center" style={{display: 'inline-block'}}>
 						<div className="btn-group btn-group-xs">
-							<button data-toggle="tooltip" className="btn btn-warning btn-with-sup ui-tooltip">
-								<i className="fa fa-pencil"></i>
-							</button>
+							<OverlayTrigger placement="top" overlay={editTooltip}>
+								<button data-toggle="tooltip" className="btn btn-warning btn-with-sup ui-tooltip">
+									<i className="fa fa-pencil"></i>
+								</button>
+							</OverlayTrigger>
 						</div>
 						<div className="btn-group btn-group-xs">
-							<button className="btn btn-success btn-with-sup">
-								<i className="fa fa-clipboard"></i>
-								<sup><i className="fa fa-plus"></i></sup>
-							</button>
+							<OverlayTrigger placement="top" overlay={newServiceRequestTooltip}>
+								<button className="btn btn-success btn-with-sup">
+									<i className="fa fa-clipboard"></i>
+									<sup><i className="fa fa-plus"></i></sup>
+								</button>
+							</OverlayTrigger>
 						</div>
 					</div>
 				</td>

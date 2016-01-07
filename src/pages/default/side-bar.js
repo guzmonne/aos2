@@ -3,17 +3,17 @@ import {Link} from 'react-router'
 
 const sidebarLinks = [
 	{
-		to: 'service_requests',
+		to: '/service_requests',
 		txt: 'Ordenes de Servicio',
 		icon: 'fa fa-clipboard'
 	},
 	{
-		to: 'clients',
+		to: '/clients',
 		txt: 'Clientes',
 		icon: 'fa fa-users'
 	},
 	{
-		to: 'devices',
+		to: '/devices',
 		txt: 'Equipos',
 		icon: 'fa fa-desktop'
 	}

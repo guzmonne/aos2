@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import Page from '../../components/page.js'
 import ClientsTable from '../../components/clients/clients-table.js'
+import {Button} from 'react-bootstrap'
+import { pushPath } from 'redux-simple-router'
 
 class Clients extends React.Component {
 	constructor(props) {
@@ -12,13 +15,26 @@ class Clients extends React.Component {
 	}	
 
 	render() {
+		const goToCreateNewClient = (e) => {
+			e.preventDefault()
+			this.props.pushPath("clients/create")
+		}
+
 		return (
 			<Page title={this.pageTitle} breadCrumbs={this.breadCrumbs}>
-				<h1>{this.title}</h1>
+				<Button bsStyle="success" onClick={goToCreateNewClient}>
+					<i className="fa fa-plus"></i>{' '}Nuevo Cliente
+				</Button>
+				<hr/>
 				<ClientsTable clients={[{id: 1, name: 'ALUCAR S.A.', identification: '123456789', contact: 'something', addresses: 'something else'}]}></ClientsTable>
 			</Page>
 		);
 	}
 }
 
-export default Clients
+export default connect(
+	null, 
+	{
+		pushPath
+	}
+)(Clients)

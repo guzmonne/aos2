@@ -8,6 +8,7 @@ import Login from './pages/users/login.page.js'
 import Dashboard from './pages/default/dashboard.js'
 import Configuration from './pages/default/configuration.js'
 import Clients from './pages/clients/clients.js'
+import ClientsCreate from './pages/clients/clients-create.js'
 
 syncReduxAndRouter(browserHistory, store)
 
@@ -25,8 +26,9 @@ class App extends React.Component {
 						<IndexRoute component={Dashboard} />
 						<Route path="configuration" component={Configuration} />
 						<Route path="clients" component={Clients} />
+						<Route path="clients/create" component={ClientsCreate} />
 					</Route>
-					<Route path="users/login" component={Login} />
+					<Route path="/users/login" component={Login} />
 				</Router>
 			</Provider>
 		)

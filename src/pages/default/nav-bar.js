@@ -16,6 +16,10 @@ class NavBar extends React.Component {
 		const {isShowingNavBarMenu} = this.props.mainLayout
 		const {username} = this.props.currentUser
 		const defaultMenuClass = 'head-user dropdown pull-right'
+		const logout = (e) => {
+			e.preventDefault();
+			logoutUser()
+		}
 
 		return (
 			<div className="container">
@@ -35,13 +39,13 @@ class NavBar extends React.Component {
 							</a>
 							<ul onMouseLeave={toggleNavBarMenu} className="dropdown-menu">
 								<li>
-									<Link to="configuration" params={{tab: 'profile'}}>Perfil</Link>
+									<Link to="/configuration" params={{tab: 'profile'}}>Perfil</Link>
 								</li>
 								<li>
-									<Link to="configuration" params={{tab: 'general'}}>Configuración</Link>
+									<Link to="/configuration" params={{tab: 'general'}}>Configuración</Link>
 								</li>
 								<li>
-									<a href="users/login" onClick={logoutUser}>Cerrar Sesión</a>
+									<a href="#" onClick={logout}>Cerrar Sesión</a>
 								</li>
 							</ul>
 						</div>
