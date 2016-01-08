@@ -1,20 +1,48 @@
 import React from 'react'
+import BaseClass from './base-class.js'
+import {AddButton, RemoveButton} from '../buttons.js'
 
-class Address extends React.Component {
-	constructor(props) {
+class Address extends BaseClass {
+	constructor(props){
 		super(props)
 		this.displayName = 'Address'
-		this.update = this.update.bind(this)
-		this.getData = this.getData.bind(this)
-		this.cleanData = this.cleanData.bind(this)
-		this.add = this.add.bind(this)
-		this.remove = this.remove.bind(this)
-		this.state = Object.assign({}, props.address)
+		this.focusOn = 'street'
 	}
 
-	componentWillReceiveProps(newProps){
-		this.setState(newProps.contact)
+	getData(){
+		const {street, location, state} = this.refs
+
+		return {
+			street: street.value,
+			location: location.value,
+			state: state.value
+		}
 	}
 
-	getData() {}
+	render(){
+		const {first, address} = this.props
+
+		return (
+			<div className="form-group has-success">
+				{first && this.label('Direcciones')}
+				<div className={first ? "col-xs-3" : "col-xs-3 col-xs-offset-2"}>
+					<input onKeyDown={this.onKeyDown} placeholder="Calle" type="text" className="form-control" onChange={this.update} value={address.street} ref="street"/>
+				</div>
+				<div className="col-xs-3">
+					<input onKeyDown={this.onKeyDown} placeholder="Localidad" type="text" className="form-control" onChange={this.update} value={address.location} ref="location"/>
+				</div>
+				<div className="col-xs-3">
+					<input onKeyDown={this.onKeyDown} placeholder="Departamento" type="text" className="form-control" onChange={this.update} value={address.state} ref="state"/>
+				</div>
+				{first ? <AddButton onClick={this.add} /> : <RemoveButton onClick={this.remove} />}
+			</div>
+		)
+	}
 }
+
+Address.propTypes = {
+	address: React.PropTypes.object.isRequired,
+	onChange: React.PropTypes.func.isRequired
+}
+
+export default Address

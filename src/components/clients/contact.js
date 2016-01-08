@@ -1,11 +1,12 @@
 import React from 'react'
 import BaseClass from './base-class.js'
+import {AddButton, RemoveButton} from '../buttons.js'
 
 class Contact extends BaseClass {
 	constructor(props){
-		super(Object.assign({}, props, {focusOn: 'value', propToState: 'contact'}))
+		super(props)
 		this.displayName = 'Contact'
-		this.getData = this.getData.bind(this)
+		this.focusOn = 'value'
 	}
 
 	getData() {
@@ -20,13 +21,10 @@ class Contact extends BaseClass {
 
 	render(){
 		const {first, contact} = this.props
-		const label = <label className="control-label col-xs-2">Contacto</label>
-		const addButton = <div className="col-xs-1"><button onClick={this.add} className="btn btn-success"><i className="fa fa-plus"></i></button></div>
-		const delButton = <div className="col-xs-1"><button onClick={this.remove} className="btn btn-danger"><i className="fa fa-minus"></i></button></div>
 		
 		return(
 			<div className="form-group">
-				{first && label}
+				{first && this.label('Contacto')}
 				<div className={first ? "col-xs-2" : "col-xs-2 col-xs-offset-2"}>
 					<select className="form-control" onChange={this.update} value={contact.type} ref="type">
 						<option value="email">Email</option>
@@ -42,9 +40,9 @@ class Contact extends BaseClass {
 					</select>
 				</div>
 				<div className="col-xs-4">
-					<input type="text" placeholder="Valor" onChange={this.update} className="form-control" value={contact.value} ref="value"/>
+					<input onKeyDown={this.onKeyDown} type="text" placeholder="Valor" onChange={this.update} className="form-control" value={contact.value} ref="value"/>
 				</div>
-				{first ? addButton : delButton}
+				{first ? <AddButton onClick={this.add} /> : <RemoveButton onClick={this.remove} />}
 			</div>
 		)
 	}

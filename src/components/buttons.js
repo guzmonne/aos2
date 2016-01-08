@@ -31,3 +31,19 @@ export function CreateButton (props){
 						<i className="fa fa-plus"></i>&nbsp;{props.children || 'Nuevo'}
 					</button>
 }
+
+export function AddButton (props) {
+	return 	<div className="col-xs-1">
+						<button {...props} tabIndex="-1" className="btn btn-success btn-outline btn-sm btn-block">
+							<i className="fa fa-plus"></i>
+						</button>
+					</div>
+}
+
+export function RemoveButton(props){
+	return	<div className="col-xs-1">
+						<button {...props} tabIndex="-1" className="btn btn-danger btn-outline btn-sm btn-block">
+							<i className="fa fa-minus"></i>
+						</button>
+					</div>
+}

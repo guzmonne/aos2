@@ -7,8 +7,14 @@ export default class BaseClass extends React.Component {
 		this.getData = this.getData.bind(this)
 		this.add = this.add.bind(this)
 		this.remove = this.remove.bind(this)
-		this.focusOn = props.focusOn
-		this.propToState = props.propToState
+		this.label = this.label.bind(this)
+		this.onKeyDown = this.onKeyDown.bind(this)
+		this.focusOn = ''
+	}
+
+	onKeyDown(e){
+		if (e.keyCode !== 13) return
+		this.add(e)
 	}
 
 	getData(){}
@@ -29,5 +35,9 @@ export default class BaseClass extends React.Component {
 		e.preventDefault()
 		this.props.onRemove()
 		this.props.onChange()
+	}
+
+	label(label){
+		return <label className="control-label col-xs-2">{label || "label"}</label>
 	}
 }
