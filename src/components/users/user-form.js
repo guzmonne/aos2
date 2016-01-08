@@ -27,7 +27,7 @@ class UserForm extends React.Component {
 				name: this.refs.name.value,
 				username: this.refs.username.value,
 				email: this.refs.email.value,
-				password: this.refs.email.value
+				password: this.refs.password.value
 			}
 
 			this.props.onSave(data)

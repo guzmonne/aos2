@@ -7,7 +7,7 @@ export function createUser(userData){
 	return dispatch => {
 		const data = _.pick(userData, 'name', 'username', 'password', 'email')
 		const user = new Parse.User();
-		
+
 		const handleSuccess = (user) => {
 			dispatch(userCreateSuccess(user))
 			dispatch(toggleCreateUserModal())
