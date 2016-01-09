@@ -47,3 +47,21 @@ export function RemoveButton(props){
 						</button>
 					</div>
 }
+
+export function BtnRowToolbar({buttons}){
+	return (
+		<div style={{display: 'inline-block'}} className="btn-toolbar btn-center">
+			{buttons.map((b, i) => {
+				return (
+					<div key={i} className="btn-group btn-group-xs">
+						{b}
+					</div>
+				)
+			})}
+		</div>
+	)
+}
+
+BtnRowToolbar.propTypes = {
+	buttons: React.PropTypes.array.isRequired
+}
