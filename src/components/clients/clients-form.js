@@ -2,149 +2,177 @@ import React from 'react'
 import {Input, Button, ButtonToolbar} from 'react-bootstrap'
 import Contact from './contact.js'
 import Address from './address.js'
+import * as helpers from '../../helpers/helpers.js'
 
 class ClientsForm extends React.Component {
 	constructor(props){
 		super(props);
 		this.displayName     = 'ClientsForm'
 		this.submit          = this.submit.bind(this)
-		//this.onChangeContact = this.onChangeContact.bind(this)
-		//this.removeContact   = this.removeContact.bind(this)
+
 		this.addContact      = this.addContact.bind(this)
 		this.addAddress      = this.addAddress.bind(this)
 		this.remove          = this.remove.bind(this)
+
+		this.formHasErrors       = this.formHasErrors.bind(this)
+		this.filterEmptySubforms = this.filterEmptySubforms.bind(this)
+		this.cleanIdentification = this.cleanIdentification.bind(this)
 		
 		this.onChangeContact = this.onChangeSubForm('contact', 'contactInputs').bind(this)
 		this.onChangeAddress = this.onChangeSubForm('addresses', 'addressesInputs').bind(this)
 
-		this.defaultAddressesInputs = {
-			street: '',
-			location: '',
-			state: ''
-		}
+		this.defaultAddressesInputs = { street: '', location: '', state: ''}
+		this.defaultContactInputs   = { type: 'phone', value: '', description: ''}
 		
-		this.state = Object.assign(
-			{},
+		this.state = Object.assign( {}, 
 			this.props.client,
 			{
-				contactInputs: {
-					type: 'phone',
-					value: '',
-					description: ''
-				},
-				addressesInputs: this.defaultAddressesInputs
+				contactInputs: Object.assign({}, this.defaultContactInputs),
+				addressesInputs: Object.assign({}, this.defaultAddressesInputs),
+				errors: null
 			}
 		)
+	}
+
+	formHasErrors(){
+		let errors = {}
+		const {name, identification} = this.state
+
+		if (name === '') errors.name = 'El nombre del cliente no puede quedar vacío.'
+		if (identification === '') errors.identification = 'El número de identificación del cliente no puede quedar vacío.'
+
+		this.setState({errors})
+		
+		return ( Object.keys(errors).length > 0 )
+	}
+
+	cleanIdentification(){
+		this.setState({identification: this.state.identification.replace(/\D/g, '')})
+	}
+
+	filterEmptySubforms(){
+		this.setState({
+			contact: this.state.contact.
+								map(c => {
+									c.value = c.value.replace(/\s|\D/g, '')
+									return c
+								}).
+								filter( c => c.value !== ''),
+			addresses: this.state.addresses.
+									map(a => {
+										console.log(helpers.toTitleCase(a.street))
+										a.street = helpers.toTitleCase(a.street)
+										a.location = a.location.toUpperCase()
+										a.state = a.state.toUpperCase()
+										return a
+									}).
+									filter( a => a.street !== '')
+		})
 	}
 
 	submit(e){
 		e.preventDefault()
 
-		let {name, identification, contact, addresses, contactInputs, addressesInputs} = this.state
-		let errors = {}
+		if (this.formHasErrors()) return
 
-		if (name === '')
-			errors.name = 'El nombre del cliente no puede quedar vacío.'
-		if (identification === '')
-			errors.identification = 'El número de identificación del cliente no puede quedar vacío.'
+		this.cleanIdentification()
+		this.addContact(this.state.contactInputs)
+		this.addAddress(this.state.addressesInputs)
 
-		identification = identification.replace(/\D/g, '')
-		
-		if (Object.keys(errors).length > 0)
-			return this.setState(Object.assign({}, this.state, {errors: errors}))
-		else
-			this.setState(Object.assign({}, this.state, {errors: null}))
+		setTimeout(() => this.filterEmptySubforms())
 
-		if (contactInputs.value !== '')
-			contact.push(contactInputs)
-		if (addressesInputs.street !== '')
-			addresses.push(addressesInputs)
-
-		contact   = contact.filter(c => c.value !== '')
-		addresses = addresses.filter(a => a.street !== '')
-
-		this.props.onSubmit({ name, identification, contact, addresses })
+		return setTimeout(() => this.props.onSubmit({
+				name           : this.state.name,
+				identification : this.state.identification,
+				contact        : this.state.contact,
+				addresses      : this.state.addresses
+			})
+		)
 	}
 
 	update(key){
-		const updatedObject = {[key]: this.refs[key].getValue()}
-		
-		this.setState(Object.assign({}, this.state, updatedObject));
+		this.setState({[key]: this.refs[key].getValue()});
 	}
 
 	onChangeSubForm(subform, subformInputs){
 		return (data, index) => {
-			let newState = Object.assign({}, this.state)
-			if (data){
-				if (index === undefined)
-					newState[subformInputs] = data
-				else 
-					newState[subform][index] = data 
-			} 
-			this.setState(newState)
+			if (data && index === undefined) {
+				this.setState({[subformInputs]: data})
+			} else if (data) {
+				const cloneState = [...this.state[subform]]
+				cloneState[index] = data
+				this.setState({[subform]: cloneState})
+			}
 		}
 	}
 
 	remove(index, array){
-		this.state[array] = [...this.state[array].slice(0, index), ...this.state[array].slice(index + 1)]
+		this.setState( {[array]: [...this.state[array].slice(0, index), ...this.state[array].slice(index + 1) ]} )
 	}
 
 	addContact(contact){
-		this.state.contact = [...this.state.contact, contact]
-		this.state.contactInputs.value = ''
+		if (contact.value === '') return
+
+		this.setState({
+			contact: [...this.state.contact, contact],
+			contactInputs: Object.assign({}, this.state.contactInputs, {value: ''})
+		})
 	}
 
 	addAddress(address){
-		console.log(address);
-		this.state.addresses = [...this.state.addresses, address]
-		this.state.addressesInputs = this.defaultAddressesInputs
+		if (address.street === '') return
+
+		this.setState({
+			addresses: [...this.state.addresses, address],
+			addressesInputs: Object.assign({}, this.defaultAddressesInputs)
+		})
 	}
 
 	render(){
-		const client = this.state
+		console.log(this.state)
 
 		return (
 			<form onSubmit={this.submit} className="form-horizontal">
-				<Input 	help={ (client.errors && client.errors.name) || null}
+				<Input 	help={ (this.state.errors && this.state.errors.name) || null}
 								placeholder="Nombre"
 								type="text"
 								labelClassName="col-xs-2"
 								onChange={() => {this.update('name')}}
-								bsStyle={(client.errors && client.errors.name) ? "error" : null}
+								bsStyle={(this.state.errors && this.state.errors.name) ? "error" : null}
 								wrapperClassName="col-xs-10"
 								label="Nombre"
 								ref="name"
-								value={client.name}/>
+								value={this.state.name}/>
 				
-				<Input 	help={(client.errors && client.errors.identification) || null}
+				<Input 	help={(this.state.errors && this.state.errors.identification) || null}
 								placeholder="C.I.; DNI; Pasaporte"
-								bsStyle={(client.errors && client.errors.identification) ? "error" : null}
+								bsStyle={(this.state.errors && this.state.errors.identification) ? "error" : null}
 								type="text"
 								labelClassName="col-xs-2"
 								onChange={() => {this.update('identification')}}
 								wrapperClassName="col-xs-10"
 								label="ID"
 								ref="identification"
-								value={client.identification}/>
+								value={this.state.identification}/>
 				
 				<Contact 	onChange={this.onChangeContact}
 									first={true}
 									onAdd={this.addContact}
 									contact={ this.state.contactInputs }/>
-				{client.contact.map( (contact, index) => <Contact	onChange={data => this.onChangeContact(data, index)}
-																													contact={contact}
-																													onRemove={() => this.remove(index, 'contact')}
-																													key={index}/>)
+				{this.state.contact.map( (contact, index) => <Contact	onChange={ data => this.onChangeContact(data, index) }
+																													contact={ contact }
+																													onRemove={ () => this.remove(index, 'contact') }
+																													key={ index }/>)
 				}
  
-				<Address 	onChange={this.onChangeAddress}
-									first={true}
-									onAdd={this.addAddress}
+				<Address 	onChange={ this.onChangeAddress }
+									first={ true }
+									onAdd={ this.addAddress }
 									address={ this.state.addressesInputs } />
-				{client.addresses.map( (address, index) => <Address onChange={data => this.onChangeAddress(data, index)}
-																														address={address}
-																														onRemove={() => this.remove(index, 'addresses')}
-																														key={index}/> )
+				{this.state.addresses.map( (address, index) => <Address onChange={ data => this.onChangeAddress(data, index) }
+																														address={ address }
+																														onRemove={ () => this.remove(index, 'addresses') }
+																														key={ index }/> )
 				}
 
 				<div className="form-group">

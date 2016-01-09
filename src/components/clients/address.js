@@ -23,7 +23,7 @@ class Address extends BaseClass {
 		const {first, address} = this.props
 
 		return (
-			<div className="form-group has-success">
+			<div className="form-group">
 				{first && this.label('Direcciones')}
 				<div className={first ? "col-xs-3" : "col-xs-3 col-xs-offset-2"}>
 					<input onKeyDown={this.onKeyDown} placeholder="Calle" type="text" className="form-control" onChange={this.update} value={address.street} ref="street"/>
