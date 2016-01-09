@@ -26,7 +26,7 @@ const newServiceRequestTooltip = 	<Tooltip id="newServiceRequest">
 const EditButton = ({tooltip}) => {
 	return (
 		<OverlayTrigger placement="top" overlay={tooltip}>
-			<button data-toggle="tooltip" className="btn btn-warning btn-with-sup">
+			<button data-toggle="tooltip" className="btn btn-warning btn-with-sup btn-outline">
 				<i className="fa fa-pencil"></i>
 			</button>
 		</OverlayTrigger>
@@ -35,7 +35,7 @@ const EditButton = ({tooltip}) => {
 const NewServiceRequestButton = ({tooltip}) => {
 	return (
 		<OverlayTrigger placement="top" overlay={tooltip}>
-			<button className="btn btn-success btn-with-sup">
+			<button className="btn btn-success btn-with-sup btn-outline">
 				<i className="fa fa-clipboard"></i>
 				<sup><i className="fa fa-plus"></i></sup>
 			</button>

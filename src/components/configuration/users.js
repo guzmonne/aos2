@@ -52,7 +52,7 @@ class Users extends React.Component {
 
 				<hr/>
 
-				<UsersTable onDelete={(user) => console.log(user)}
+				<UsersTable onDelete={(user) => console.log(user.getUsername())}
 										users={users.collection}/>
 
 				{isShowingCreateModal ? $modal : null}

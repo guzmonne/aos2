@@ -34,6 +34,11 @@ class ClientsForm extends React.Component {
 		)
 	}
 
+	componentDidMount(){
+		console.log(this.refs.name)
+		this.refs.name.refs.input.focus()
+	}
+
 	formHasErrors(){
 		let errors = {}
 		const {name, identification} = this.state
@@ -129,8 +134,6 @@ class ClientsForm extends React.Component {
 	}
 
 	render(){
-		console.log(this.state)
-
 		return (
 			<form onSubmit={this.submit} className="form-horizontal">
 				<Input 	help={ (this.state.errors && this.state.errors.name) || null}

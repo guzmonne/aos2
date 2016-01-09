@@ -13,7 +13,6 @@ class Configuration extends React.Component {
 
 	isActive(tabName){
 		const currentTab = this.props.routing.path.replace(/\/|configuration/g, '')
-		console.log(currentTab)
 		return currentTab === tabName
 	}
 
