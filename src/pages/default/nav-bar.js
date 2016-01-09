@@ -39,7 +39,7 @@ class NavBar extends React.Component {
 							</a>
 							<ul onMouseLeave={toggleNavBarMenu} className="dropdown-menu">
 								<li>
-									<Link to="/configuration" params={{tab: 'profile'}}>Perfil</Link>
+									<Link to="/configuration/account" params={{tab: 'profile'}}>Perfil</Link>
 								</li>
 								<li>
 									<Link to="/configuration" params={{tab: 'general'}}>Configuración</Link>

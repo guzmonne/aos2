@@ -9,30 +9,27 @@ import Dashboard from './pages/default/dashboard.js'
 import Configuration from './pages/default/configuration.js'
 import Clients from './pages/clients/clients.js'
 import ClientsCreate from './pages/clients/clients-create.js'
+import Account from './components/configuration/account.js'
+import Users from './components/configuration/users.js'
 
 syncReduxAndRouter(browserHistory, store)
 
-class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.displayName = 'App'
-	}
-
-	render(){
-		return (
-			<Provider store={store}>
-				<Router history={browserHistory}>
-					<Route path="/" component={MainLayout}>
-						<IndexRoute component={Dashboard} />
-						<Route path="configuration" component={Configuration} />
-						<Route path="clients" component={Clients} />
-						<Route path="clients/create" component={ClientsCreate} />
+export default (props) => {
+	return (
+		<Provider store={store}>
+			<Router history={browserHistory}>
+				<Route path="/" component={MainLayout}>
+					<IndexRoute component={Dashboard} />
+					<Route path="configuration" component={Configuration}>
+						<IndexRoute component={() => <div>General</div>} />
+						<Route path="account" component={Account}/>
+						<Route path="users" component={Users}/>
 					</Route>
-					<Route path="/users/login" component={Login} />
-				</Router>
-			</Provider>
-		)
-	}
+					<Route path="clients" component={Clients} />
+					<Route path="clients/create" component={ClientsCreate} />
+				</Route>
+				<Route path="/users/login" component={Login} />
+			</Router>
+		</Provider>
+	)
 }
-
-export default App

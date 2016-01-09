@@ -6,11 +6,6 @@ export const HIDE_MODAL_OVERLAY = 'HIDE_MODAL_OVERLAY'
 export const SHOW_NAVBAR_MENU   = 'SHOW_NAVBAR_MENU'
 export const HIDE_NAVBAR_MENU   = 'HIDE_NAVBAR_MENU'
 /***************************************************/
-/* COUNTER                                         */
-/***************************************************/
-export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
-export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
-/***************************************************/
 /* LOGIN                                           */
 /***************************************************/
 export const LOGGING_IN_USER = 'LOGGING_IN_USER'

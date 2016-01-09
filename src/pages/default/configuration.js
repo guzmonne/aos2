@@ -1,40 +1,44 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { store } from '../../state/store.js'
-import { Tabs, Tab, TabContainer } from '../../components/tabs.js'
-import { changeConfigurationTab } from './configuration.actions.js'
-import Account from '../../components/configuration/account.js'
-import Users from '../../components/configuration/users.js'
+import { Link } from 'react-router'
+import Page from '../../components/page.js'
 
 class Configuration extends React.Component {
 	constructor(props) {
     super(props);
-    this.displayName = 'Configuration';
-    this.isTabActive = this.isTabActive.bind(this);
+		this.displayName = 'Configuration';
+		this.isActive    = this.isActive.bind(this)
+		this.breadCrumbs = [{txt: 'Configuración'}]
 	}	
 
-	isTabActive(tabName){
-		return this.props.configuration.tab === tabName
+	isActive(tabName){
+		const currentTab = this.props.routing.path.replace(/\/|configuration/g, '')
+		console.log(currentTab)
+		return currentTab === tabName
 	}
 
 	render() {
-		const tabName = this.props.configuration.tab
 		const changeConfigurationTab = this.props.changeConfigurationTab
 
-		const tabsArray = [
-			{name: 'general', txt: 'General', component: <div>General</div> },
-			{name: 'account', txt: 'Cuenta', component: <Account /> },
-			{name: 'users', txt: 'Usuarios', component: <Users /> }
-		];
-
 		return (
-			<div className="container container-fluid">
-				<h3 className="align-container-padding-1x">Configuración</h3>
-				<hr/>
-				<TabContainer tabs={tabsArray}
-											activeTab={tabName}
-											onActivate={changeConfigurationTab}/>
-			</div>
+			<Page title={<span><i className="fa fa-cog"></i>Configuración</span>} breadCrumbs={this.breadCrumbs}>
+				<div className="nav">
+					<ul className="nav nav-tabs">
+						<li className={this.isActive('') && 'active'}>
+							<Link to="/configuration">General</Link>
+						</li>
+						<li className={this.isActive('account') && 'active'}>
+							<Link to="/configuration/account">Cuenta</Link>
+						</li>
+						<li className={this.isActive('users') && 'active'}>
+							<Link to="/configuration/users">Usuarios</Link>
+						</li>
+					</ul>
+				</div>
+				<div className="tab-body">
+					{this.props.children}
+				</div>
+			</Page>
 		)
 	}
 }
@@ -44,12 +48,9 @@ Configuration.propTypes = {
 }
 
 function select (state){
-	return { configuration: state.configuration }
+	return { routing: state.routing }
 }
 
 export default connect(
-	select, 
-	{
-		changeConfigurationTab
-	}
+	select, {}
 )(Configuration)
