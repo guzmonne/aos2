@@ -1,8 +1,33 @@
-import {LOADING_CLIENTS, CLIENTS_FETCH_SUCCESS, CLIENTS_FETCH_ERROR, CLIENT_CREATE_SUCCESS, CLIENT_CREATE_ERROR} from '../../state/action-types.js'
+import {RESET_ACTIVE_CLIENT, LOADING_CLIENTS, CLIENT_FETCH_SUCCESS, CLIENT_FETCH_ERROR, CLIENTS_FETCH_SUCCESS, CLIENTS_FETCH_ERROR, CLIENT_CREATE_SUCCESS, CLIENT_CREATE_ERROR} from '../../state/action-types.js'
 import { pushPath } from 'redux-simple-router'
 import Parse from 'parse'
 import Client from '../../models/client.model.js'
 import _ from 'lodash'
+
+export function fetchClient(id){
+	return (dispatch, getState) => {
+		const handleSuccess = (client) => {
+			let collection = getState().clients.collection
+			
+			const clientInCollection = collection.find(c => c.id === client.id)
+
+			if (!clientInCollection)
+				collection = [...collection, client]
+
+			dispatch(fetchClientSuccess(client, collection))
+		}
+		const handleError = (error) => dispatch(fetchClientError(error))
+		
+		const client = new Client({id: id})
+
+		dispatch(resetActiveClient())
+		dispatch(loadingClients())
+
+		client.
+			fetch().
+			then( handleSuccess, handleError )
+	}
+}
 
 export function fetchClients(){
 	return dispatch => {
@@ -25,8 +50,8 @@ export function createClient(rawData){
 		dispatch(loadingClients())
 
 		const handleSuccess = client => {
-			dispatch(createClientSuccess(client, true))
-			dispatch(pushPath('/clients'))
+			dispatch(createClientSuccess(client, Client.default()))
+			dispatch(pushPath(`/clients/edit/${client.id}`))
 		} 
 		const handleError = error => dispatch(createClientError(error))
 
@@ -36,6 +61,12 @@ export function createClient(rawData){
 
 		client.save(null).
 			then(handleSuccess, handleError)
+	}
+}
+
+export function resetActiveClient(){
+	return {
+		type: RESET_ACTIVE_CLIENT
 	}
 }
 
@@ -52,10 +83,18 @@ export function fetchClientsSuccess(clients){
 	}
 }
 
-export function createClientSuccess(client, resetClient){
+export function fetchClientSuccess(client, collection){
+	return {
+		type: CLIENT_FETCH_SUCCESS,
+		client,
+		collection
+	}
+}
+
+export function createClientSuccess(client, activeClient){
 	return {
 		type: CLIENT_CREATE_SUCCESS,
-		resetClient,
+		activeClient,
 		client
 	}
 }
@@ -63,6 +102,13 @@ export function createClientSuccess(client, resetClient){
 export function fetchClientsError(error){
 	return {
 		type: CLIENTS_FETCH_ERROR,
+		error
+	}
+}
+
+export function fetchClientError(error){
+	return {
+		type: CLIENT_FETCH_ERROR,
 		error
 	}
 }

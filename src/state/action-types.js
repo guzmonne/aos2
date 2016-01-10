@@ -38,9 +38,11 @@ export const USER_CREATE_ERROR         = 'USER_CREATE_ERROR'
 /***************************************************/
 /* CLIENTS                                         */
 /***************************************************/
-export const CLIENT_FORM_CLEAN     = 'CLIENT_FORM_CLEAN'
+export const RESET_ACTIVE_CLIENT   = 'RESET_ACTIVE_CLIENT'
 export const LOADING_CLIENTS       = 'LOADING_CLIENTS'
 export const CLIENT_CREATE_SUCCESS = 'CLIENT_CREATE_SUCCESS'
 export const CLIENT_CREATE_ERROR   = 'CLIENT_CREATE_ERROR'
 export const CLIENTS_FETCH_SUCCESS = 'CLIENTS_FETCH_SUCCESS'
 export const CLIENTS_FETCH_ERROR   = 'CLIENTS_FETCH_ERROR'
+export const CLIENT_FETCH_SUCCESS  = 'CLIENT_FETCH_SUCCESS'
+export const CLIENT_FETCH_ERROR    = 'CLIENT_FETCH_ERROR'

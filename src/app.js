@@ -8,6 +8,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import App from './main.app.js'
 import Parse from 'parse'
+import Client from './models/client.model.js'
 
 Parse.initialize(
 	'JFX5XaxaUT3F9NvmgjeeTqsPvKXW0Eap9PSZ5hpM',
@@ -15,5 +16,6 @@ Parse.initialize(
 );
 
 window.Parse = Parse;
+window.Client = Client;
 
 render(<App />, document.getElementById('root'))

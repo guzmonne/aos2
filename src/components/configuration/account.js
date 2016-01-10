@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { store } from '../../state/store.js'
 import UserForm from '../users/user-form.js'
 import {updateAccount, enableAccountEdition, disableAccountEdition} from './account.actions.js'
 
@@ -9,10 +8,12 @@ class Account extends React.Component {
 	constructor(props) {
     super(props);
     this.displayName = 'Account';
+		this.counter = 1
 	}
 
 	componentWillMount(){
-		store.dispatch(this.props.disableAccountEdition())
+		if (this.props.account.editable)
+			this.props.disableAccountEdition()
 	}
 
 	render() {

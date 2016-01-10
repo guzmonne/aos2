@@ -15,11 +15,10 @@ export function disableAccountEdition(){
 	}
 }
 
-export function updateAccount(data){
+export function updateAccount(rawData){
 	if (!data) return;
 
-	data = _.pick(data, 'name', 'email');
-
+	data = _.pick(rawData, 'name', 'email');
 
 	return dispatch => {
 	

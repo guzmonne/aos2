@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { createClient } from './clients.actions.js'
+import { createClient, resetActiveClient } from './clients.actions.js'
 import Page from '../../components/page.js'
 import ClientsForm from '../../components/clients/clients-form.js'
 
@@ -10,8 +10,12 @@ class ClientsCreate extends React.Component {
 		this.displayName = 'ClientsCreate';
 		this.title       = 'Crear Nuevo Cliente'
 		this.pageTitle   = <span><i className="fa fa-users purple"></i>{' ' + this.title}</span>
-		this.breadCrumbs = [{txt: 'Clients', to: '/clients'}, {txt: 'Nuevo'}]
+		this.breadCrumbs = [{txt: 'Clientes', to: '/clients'}, {txt: 'Nuevo'}]
 		this.submit      = this.submit.bind(this)
+	}
+
+	componentWillMount(){
+		this.props.resetActiveClient()
 	}
 
 	submit(data){
@@ -23,7 +27,9 @@ class ClientsCreate extends React.Component {
 		return (
 			<Page title={this.pageTitle} breadCrumbs={this.breadCrumbs}>
 				<div className="container">
-					<ClientsForm loading={this.props.clients.loading} onSubmit={this.submit} client={this.props.clients.activeClient}></ClientsForm>
+					<ClientsForm 	loading={this.props.clients.loading}
+												onSubmit={this.submit}
+												client={this.props.clients.activeClient.attributes}></ClientsForm>
 				</div>
 			</Page>
 		);
@@ -39,6 +45,7 @@ function select(state){
 export default connect(
 	select,
 	{
-		createClient
+		createClient,
+		resetActiveClient
 	}
 )(ClientsCreate)

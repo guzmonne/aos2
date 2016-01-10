@@ -17,8 +17,6 @@ class Configuration extends React.Component {
 	}
 
 	render() {
-		const changeConfigurationTab = this.props.changeConfigurationTab
-
 		return (
 			<Page title={<span><i className="fa fa-cog"></i>Configuración</span>} breadCrumbs={this.breadCrumbs}>
 				<div className="nav">

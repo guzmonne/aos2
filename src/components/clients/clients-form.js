@@ -24,7 +24,7 @@ class ClientsForm extends React.Component {
 
 		this.defaultAddressesInputs = { street: '', location: '', state: ''}
 		this.defaultContactInputs   = { type: 'phone', value: '', description: ''}
-		
+
 		this.state = Object.assign( {}, 
 			this.props.client,
 			{
@@ -33,6 +33,10 @@ class ClientsForm extends React.Component {
 				errors: null
 			}
 		)
+	}
+
+	componentWillReceiveProps(newProps){
+		this.setState( newProps.client )
 	}
 
 	componentDidMount(){
@@ -52,7 +56,7 @@ class ClientsForm extends React.Component {
 	}
 
 	cleanIdentification(){
-		this.setState({identification: this.state.identification.replace(/\D/g, '')})
+		this.setState({identification: this.state.identification.toString().replace(/\D/g, '')})
 	}
 
 	filterEmptySubforms(){
@@ -88,7 +92,7 @@ class ClientsForm extends React.Component {
 
 		return setTimeout(() => this.props.onSubmit({
 				name           : this.state.name,
-				identification : +this.state.identification,
+				identification : parseInt(this.state.identification),
 				contact        : this.state.contact,
 				addresses      : this.state.addresses
 			})

@@ -9,6 +9,7 @@ import Dashboard from './pages/default/dashboard.js'
 import Configuration from './pages/default/configuration.js'
 import Clients from './pages/clients/clients.js'
 import ClientsCreate from './pages/clients/clients-create.js'
+import ClientsEdit from './pages/clients/clients-edit.js'
 import Account from './components/configuration/account.js'
 import Users from './components/configuration/users.js'
 
@@ -27,6 +28,7 @@ export default (props) => {
 					</Route>
 					<Route path="clients" component={Clients} />
 					<Route path="clients/create" component={ClientsCreate} />
+					<Route path="clients/edit/:id" component={ClientsEdit} />
 				</Route>
 				<Route path="/users/login" component={Login} />
 			</Router>
