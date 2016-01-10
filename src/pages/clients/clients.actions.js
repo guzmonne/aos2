@@ -1,8 +1,23 @@
-import {RESET_ACTIVE_CLIENT, LOADING_CLIENTS, CLIENT_FETCH_SUCCESS, CLIENT_FETCH_ERROR, CLIENTS_FETCH_SUCCESS, CLIENTS_FETCH_ERROR, CLIENT_CREATE_SUCCESS, CLIENT_CREATE_ERROR} from '../../state/action-types.js'
+import {RESET_ACTIVE_CLIENT, LOADING_CLIENTS, CLIENT_UPDATE_SUCCESS, CLIENT_UPDATE_ERROR, CLIENT_FETCH_SUCCESS, CLIENT_FETCH_ERROR, CLIENTS_FETCH_SUCCESS, CLIENTS_FETCH_ERROR, CLIENT_CREATE_SUCCESS, CLIENT_CREATE_ERROR} from '../../state/action-types.js'
 import { pushPath } from 'redux-simple-router'
 import Parse from 'parse'
 import Client from '../../models/client.model.js'
 import _ from 'lodash'
+
+export function updateClient(rawData){
+	return (dispatch, getState) => {
+		const data = _.pick(rawData, 'id', 'name', 'identification', 'contact', 'addresses')
+		
+		const handleSuccess = (client) => dispatch(updateClientSuccess())
+		const handleError = (error) => dispatch(updateClientError(error))
+
+		dispatch(loadingClients())
+		
+		const client = getState().clients.activeClient.set(data)
+
+		client.save().then(handleSuccess, handleError)
+	}
+}
 
 export function fetchClient(id){
 	return (dispatch, getState) => {
@@ -73,6 +88,18 @@ export function resetActiveClient(){
 export function loadingClients(){
 	return {
 		type: LOADING_CLIENTS
+	}
+}
+
+export function updateClientSuccess(){
+	return {
+		type: CLIENT_UPDATE_SUCCESS
+	}
+}
+
+export function updateClientError(){
+	return {
+		type: CLIENT_UPDATE_ERROR
 	}
 }
 

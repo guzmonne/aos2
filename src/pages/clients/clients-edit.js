@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Page from '../../components/page.js'
 import ClientsForm from '../../components/clients/clients-form.js'
-import { fetchClient } from './clients.actions.js'
+import { fetchClient, updateClient } from './clients.actions.js'
 
 class ClientsEdit extends React.Component {
 	constructor(props){
@@ -12,6 +12,7 @@ class ClientsEdit extends React.Component {
 		this.pageTitle = <span><i className="fa fa-users orange"></i>{' ' + this.title}</span>
 		this.loadingPageTitle = <span><i className="fa fa-spinner fa-spin orange"></i>{' ' + this.title}</span>
 		this.breadCrumbs = [{txt: 'Clientes', to: '/clients'}, {txt: 'Editar'}]
+		this.submit = this.submit.bind(this)
 	}
 
 	componentDidMount(){
@@ -19,6 +20,8 @@ class ClientsEdit extends React.Component {
 	}
 
 	submit(data){
+		if (!data) return
+		this.props.updateClient(data)
 	}
 
 	render(){
@@ -47,6 +50,7 @@ function select(state){
 export default connect(
 	select,
 	{
-		fetchClient
+		fetchClient,
+		updateClient
 	}
 )(ClientsEdit)

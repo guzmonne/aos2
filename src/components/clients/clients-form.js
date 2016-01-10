@@ -192,9 +192,6 @@ class ClientsForm extends React.Component {
 
 				<div className="form-group">
 					<div className="col-xs-offset-2 col-xs-10">
-						<div className="pull-right">
-							<CancelButton loading={loading} />
-						</div>
 						<SaveButton type="submit" loading={loading}/>
 					</div>
 				</div>
