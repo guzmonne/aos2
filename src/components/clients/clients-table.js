@@ -5,7 +5,6 @@ import { BtnRowToolbar } from '../buttons.js'
 
 /* Table Head */
 const thead = <tr>
-								<th>#</th>
 								<th>Nombre</th>
 								<th>ID</th>
 								<th>Contacto</th>
@@ -42,15 +41,41 @@ const NewServiceRequestButton = ({tooltip}) => {
 		</OverlayTrigger>
 	)
 }
+/* Addresses */
+const AddressItem = ({address}) => 	<div className="text-primary-on-hover">
+																			<i className="fa fa-home"></i>
+																			<strong>{' ' + address.street}</strong>
+																			{address.location ? <br/> : null}
+																			{address.location ? address.location : null}
+																			{address.state ? ', ' + address.state : null}
+																		</div> 
+/* Contact */
+const ContactItem = ({contact}) =>	<div className="text-primary-on-hover">
+																			{contact.type === 'phone' ?
+																				<i className="fa fa-phone"></i> :
+																				<i className="fa fa-envelope"></i>
+																			}
+																			<strong>{' ' + contact.description}</strong>
+																			<br/>
+																			{contact.value}
+																		</div>
 /* Table Row */
 const Tr = ({client}) => {
 	return (
-		<tr>
-			<td>{client.id}</td>
-			<td>{client.name}</td>
-			<td>{client.identification}</td>
-			<td>{client.contact}</td>
-			<td>{client.addresses}</td>
+		<tr className="animated fadeIn">
+			<td>{client.get('name')}</td>
+			<td>{client.get('identification')}</td>
+			<td>
+				{client.get('contact').
+					filter(c => c.type === 'phone').
+					map( (p, i) => <ContactItem key={i} contact={p} />)}
+				{client.get('contact').
+					filter(c => c.type === 'email').
+					map( (p, i) => <ContactItem key={i} contact={p} />)}
+			</td>
+			<td>
+				{client.get('addresses').map((a, i) => <AddressItem key={i} address={a}/>)}
+			</td>
 			<td className="text-center">
 				<BtnRowToolbar buttons={[
 					<EditButton tooltip={editTooltip} />,
@@ -63,7 +88,6 @@ const Tr = ({client}) => {
 
 const Clients = ({clients}) => {
 	const tbody = clients.map(client => <Tr key={client.id} client={client} />)
-
 	return (
 		<Table thead={thead} tbody={tbody}/>
 	)

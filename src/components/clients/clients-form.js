@@ -59,13 +59,13 @@ class ClientsForm extends React.Component {
 		this.setState({
 			contact: this.state.contact.
 								map(c => {
+									if (c.type === 'email') return c
 									c.value = c.value.replace(/\s|\D/g, '')
 									return c
 								}).
 								filter( c => c.value !== ''),
 			addresses: this.state.addresses.
 									map(a => {
-										console.log(helpers.toTitleCase(a.street))
 										a.street = helpers.toTitleCase(a.street)
 										a.location = a.location.toUpperCase()
 										a.state = a.state.toUpperCase()

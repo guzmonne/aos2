@@ -16,9 +16,6 @@ class ClientsCreate extends React.Component {
 
 	submit(data){
 		if (!data) return
-
-		console.log(data)
-
 		this.props.createClient(data)
 	}
 

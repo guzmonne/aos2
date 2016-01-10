@@ -33,10 +33,10 @@ class Contact extends BaseClass {
 				</div>
 				<div className="col-xs-3">
 					<select className="form-control" onChange={this.update} value={contact.description} ref="description" disabled={loading}>
-						<option value="home">Casa</option>
-						<option value="work">Trabajo</option>
-						<option value="personal">Personal</option>
-						<option value="other">Otro</option>
+						<option value="Casa">Casa</option>
+						<option value="Trabajo">Trabajo</option>
+						<option value="Personal">Personal</option>
+						<option value="Otro">Otro</option>
 					</select>
 				</div>
 				<div className="col-xs-4">

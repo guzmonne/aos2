@@ -1,13 +1,28 @@
-import {CREATING_CLIENT, CLIENT_CREATE_SUCCESS, CLIENT_CREATE_ERROR} from '../../state/action-types.js'
+import {LOADING_CLIENTS, CLIENTS_FETCH_SUCCESS, CLIENTS_FETCH_ERROR, CLIENT_CREATE_SUCCESS, CLIENT_CREATE_ERROR} from '../../state/action-types.js'
 import { pushPath } from 'redux-simple-router'
+import Parse from 'parse'
 import Client from '../../models/client.model.js'
 import _ from 'lodash'
+
+export function fetchClients(){
+	return dispatch => {
+		const handleSuccess = (clients) => dispatch(fetchClientsSuccess(clients))
+		const handleError = (error) => dispatch(fetchClientsError(error))
+
+		dispatch(loadingClients())
+
+		const query = new Parse.Query(Client)
+
+		query.find({}).
+			then(handleSuccess, handleError)
+	}
+}
 
 export function createClient(rawData){
 	return dispatch => {
 		const data = _.pick(rawData, 'name', 'identification', 'contact', 'addresses')
 
-		dispatch(creatingClient())
+		dispatch(loadingClients())
 
 		const handleSuccess = client => {
 			dispatch(createClientSuccess(client, true))
@@ -17,14 +32,23 @@ export function createClient(rawData){
 
 		const client = new Client(data);
 
+		client.set('user', Parse.User.current())
+
 		client.save(null).
 			then(handleSuccess, handleError)
 	}
 }
 
-export function creatingClient(){
+export function loadingClients(){
 	return {
-		type: CREATING_CLIENT
+		type: LOADING_CLIENTS
+	}
+}
+
+export function fetchClientsSuccess(clients){
+	return {
+		type: CLIENTS_FETCH_SUCCESS,
+		clients
 	}
 }
 
@@ -33,6 +57,13 @@ export function createClientSuccess(client, resetClient){
 		type: CLIENT_CREATE_SUCCESS,
 		resetClient,
 		client
+	}
+}
+
+export function fetchClientsError(error){
+	return {
+		type: CLIENTS_FETCH_ERROR,
+		error
 	}
 }
 
