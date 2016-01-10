@@ -9,7 +9,7 @@ export function EditButton(props){
 }
 
 export function CancelButton(props){
-	return 	<button {...props} className={"btn" + props.className}>
+	return 	<button {...props} className={"btn btn-default " + props.className}>
 						<i className={props.loading ? loading : "fa fa-times"}></i>&nbsp;Cancelar
 					</button>
 }

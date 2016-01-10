@@ -11,14 +11,22 @@ class ClientsCreate extends React.Component {
 		this.title       = 'Crear Nuevo Cliente'
 		this.pageTitle   = <span><i className="fa fa-users purple"></i>{' ' + this.title}</span>
 		this.breadCrumbs = [{txt: 'Clients', to: '/clients'}, {txt: 'Nuevo'}]
-		this.client      = {name: '', contact: [], identification: '', addresses: []}
+		this.submit      = this.submit.bind(this)
+	}
+
+	submit(data){
+		if (!data) return
+
+		console.log(data)
+
+		this.props.createClient(data)
 	}
 
 	render() {
 		return (
 			<Page title={this.pageTitle} breadCrumbs={this.breadCrumbs}>
 				<div className="container">
-					<ClientsForm onSubmit={data => console.log(data)} client={this.client}></ClientsForm>
+					<ClientsForm loading={this.props.clients.loading} onSubmit={this.submit} client={this.props.clients.activeClient}></ClientsForm>
 				</div>
 			</Page>
 		);

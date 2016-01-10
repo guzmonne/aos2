@@ -2,6 +2,7 @@ import React from 'react'
 import {Input, Button, ButtonToolbar} from 'react-bootstrap'
 import Contact from './contact.js'
 import Address from './address.js'
+import { SaveButton, CancelButton } from '../buttons.js'
 import * as helpers from '../../helpers/helpers.js'
 
 class ClientsForm extends React.Component {
@@ -35,7 +36,6 @@ class ClientsForm extends React.Component {
 	}
 
 	componentDidMount(){
-		console.log(this.refs.name)
 		this.refs.name.refs.input.focus()
 	}
 
@@ -88,7 +88,7 @@ class ClientsForm extends React.Component {
 
 		return setTimeout(() => this.props.onSubmit({
 				name           : this.state.name,
-				identification : this.state.identification,
+				identification : +this.state.identification,
 				contact        : this.state.contact,
 				addresses      : this.state.addresses
 			})
@@ -134,6 +134,8 @@ class ClientsForm extends React.Component {
 	}
 
 	render(){
+		const {loading} = this.props
+
 		return (
 			<form onSubmit={this.submit} className="form-horizontal">
 				<Input 	help={ (this.state.errors && this.state.errors.name) || null}
@@ -145,7 +147,8 @@ class ClientsForm extends React.Component {
 								wrapperClassName="col-xs-10"
 								label="Nombre"
 								ref="name"
-								value={this.state.name}/>
+								value={this.state.name}
+								disabled={loading}/>
 				
 				<Input 	help={(this.state.errors && this.state.errors.identification) || null}
 								placeholder="C.I.; DNI; Pasaporte"
@@ -156,34 +159,39 @@ class ClientsForm extends React.Component {
 								wrapperClassName="col-xs-10"
 								label="ID"
 								ref="identification"
-								value={this.state.identification}/>
+								value={this.state.identification}
+								disabled={loading}/>
 				
 				<Contact 	onChange={this.onChangeContact}
 									first={true}
 									onAdd={this.addContact}
-									contact={ this.state.contactInputs }/>
+									contact={ this.state.contactInputs }
+									loading={loading}/>
 				{this.state.contact.map( (contact, index) => <Contact	onChange={ data => this.onChangeContact(data, index) }
 																													contact={ contact }
 																													onRemove={ () => this.remove(index, 'contact') }
-																													key={ index }/>)
+																													key={ index }
+																													loading={loading}/>)
 				}
  
 				<Address 	onChange={ this.onChangeAddress }
 									first={ true }
 									onAdd={ this.addAddress }
-									address={ this.state.addressesInputs } />
+									address={ this.state.addressesInputs } 
+									loading={loading}/>
 				{this.state.addresses.map( (address, index) => <Address onChange={ data => this.onChangeAddress(data, index) }
 																														address={ address }
 																														onRemove={ () => this.remove(index, 'addresses') }
-																														key={ index }/> )
+																														key={ index }
+																														loading={loading}/> )
 				}
 
 				<div className="form-group">
 					<div className="col-xs-offset-2 col-xs-10">
 						<div className="pull-right">
-							<Button bsStyle="default" type="reset" pullRight>Cancelar</Button>
+							<CancelButton loading={loading} />
 						</div>
-						<Button bsStyle="primary" type="submit">Aceptar</Button>
+						<SaveButton type="submit" loading={loading}/>
 					</div>
 				</div>
 			
@@ -193,7 +201,8 @@ class ClientsForm extends React.Component {
 }
 
 ClientsForm.propTypes = {
-	client: React.PropTypes.object.isRequired
+	client: React.PropTypes.object.isRequired,
+	loading: React.PropTypes.bool
 }
 
 export default ClientsForm

@@ -35,3 +35,10 @@ export const HIDING_CREATE_USER_MODAL  = 'HIDING_CREATE_USER_MODAL'
 export const CREATING_USER             = 'CREATING_USER'
 export const USER_CREATE_SUCCESS       = 'USER_CREATE_SUCCESS'
 export const USER_CREATE_ERROR         = 'USER_CREATE_ERROR'
+/***************************************************/
+/* CLIENTS                                         */
+/***************************************************/
+export const CLIENT_FORM_CLEAN     = 'CLIENT_FORM_CLEAN'
+export const CREATING_CLIENT       = 'CREATING_CLIENT'
+export const CLIENT_CREATE_SUCCESS = 'CLIENT_CREATE_SUCCESS'
+export const CLIENT_CREATE_ERROR   = 'CLIENT_CREATE_ERROR'
