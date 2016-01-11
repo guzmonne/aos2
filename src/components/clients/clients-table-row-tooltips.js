@@ -8,3 +8,6 @@ export const editTooltip = <Tooltip id="editClient">
 export const newServiceRequestTooltip = <Tooltip id="newServiceRequest">
 																					Nueva Orden de Servicio
 																				</Tooltip>
+export const deleteTooltip =	<Tooltip id="deleteClient">
+																Eliminar
+															</Tooltip>

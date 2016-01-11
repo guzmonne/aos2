@@ -1,4 +1,4 @@
-import {RESET_ACTIVE_CLIENT, LOADING_CLIENTS, CLIENT_UPDATE_SUCCESS, CLIENT_UPDATE_ERROR, CLIENT_FETCH_SUCCESS, CLIENT_FETCH_ERROR, CLIENTS_FETCH_SUCCESS, CLIENTS_FETCH_ERROR, CLIENT_CREATE_SUCCESS, CLIENT_CREATE_ERROR} from '../../state/action-types.js'
+import {RESET_ACTIVE_CLIENT, LOADING_CLIENTS, CLIENT_DELETE_SUCCESS, CLIENT_DELETE_ERROR, CLIENT_UPDATE_SUCCESS, CLIENT_UPDATE_ERROR, CLIENT_FETCH_SUCCESS, CLIENT_FETCH_ERROR, CLIENTS_FETCH_SUCCESS, CLIENTS_FETCH_ERROR, CLIENT_CREATE_SUCCESS, CLIENT_CREATE_ERROR} from '../../state/action-types.js'
 import Client from '../../models/client.model.js'
 
 const defaultClient = {name: '', contact: [], identification: '', addresses: []}
@@ -70,6 +70,18 @@ export default function clientsReducer(state=defaultState, action){
 				{ loading: false, error: null }
 			)
 		case CLIENT_UPDATE_ERROR:
+			return Object.assign(
+				{},
+				state,
+				{ loading: false, error: action.error } 
+			)
+		case CLIENT_DELETE_SUCCESS:
+			return Object.assign(
+				{},
+				state,
+				{ loading: false, error: null, collection: action.collection }
+			)
+		case CLIENT_DELETE_ERROR:
 			return Object.assign(
 				{},
 				state,

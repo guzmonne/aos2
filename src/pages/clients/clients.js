@@ -2,22 +2,28 @@ import React from 'react';
 import Rx from 'rx'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { Modal, Button } from 'react-bootstrap'
 import Page from '../../components/page.js'
 import ClientsTable from '../../components/clients/clients-table.js'
-import { Button } from 'react-bootstrap'
 import { UpdateButton } from '../../components/buttons.js'
-import { pushPath } from 'redux-simple-router'
-import { fetchClients } from './clients.actions.js'
+import { fetchClients, deleteClient } from './clients.actions.js'
 
 class Clients extends React.Component {
 	constructor(props) {
     super(props);
-    this.forceUpdate = this.forceUpdate.bind(this)
-    this.displayName = 'Clients';
-    this.title = 'Clientes'
-    this.pageTitle = <span><i className="fa fa-users purple"></i>{' ' + this.title}</span>
-    this.breadCrumbs = [{txt: 'Clients'}]
+		this.displayName = 'Clients';
+		this.title       = 'Clientes'
+		this.pageTitle   = <span><i className="fa fa-users purple"></i>{' ' + this.title}</span>
+		this.breadCrumbs = [{txt: 'Clients'}]
+    
     this.updateSubject = new Rx.BehaviorSubject()
+		
+		this.del         = this.del.bind(this)
+		this.confirmDel  = this.confirmDel.bind(this)
+		this.closeModal  = this.closeModal.bind(this)
+		this.forceUpdate = this.forceUpdate.bind(this)
+
+    this.state = {showModal: false, clientToBeDelId: null}
 	}
 
 	componentDidMount(){
@@ -48,9 +54,56 @@ class Clients extends React.Component {
 			onNext({forceUpdate: true})
 	}
 
+	closeModal(e){
+		if (e)
+			e.preventDefault()
+		this.setState({
+			showModal: false,
+			clientToBeDelId: null
+		})
+	}
+
+	del(user){
+		this.setState({
+			showModal: true,
+			clientToBeDelId: user.id
+		})
+	}
+
+	confirmDel(e){
+		e.preventDefault()
+		if (!this.state.clientToBeDelId) return
+		this.props.deleteClient(this.state.clientToBeDelId)
+		this.closeModal()
+	}
+
 	render() {
 		return (
 			<Page title={this.pageTitle} breadCrumbs={this.breadCrumbs}>
+				<Modal show={this.state.showModal} onHide={this.closeModal} backdrop={true}>
+					<Modal.Header closeButton>
+		        <Modal.Title>
+		        	<span className="text-warning">
+			        	<i className="fa fa-exclamation-triangle"></i>
+			        	{' '}
+			        	¡Atención!
+		        	</span>
+	        	</Modal.Title>
+		      </Modal.Header>
+					<Modal.Body>
+						<p className="text-center">¿Esta seguro que desea eliminar este cliente?</p>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button bsStyle="default" onClick={this.closeModal}>
+							Cancelar
+						</Button>
+						<div className="pull-left">
+							<Button bsStyle="primary" onClick={this.confirmDel}>
+								Aceptar
+							</Button>
+						</div>
+					</Modal.Footer>
+				</Modal>
 				<div className="row">
 					<div className="col-md-12">
 						<UpdateButton onClick={this.forceUpdate} loading={this.props.clients.loading}/>
@@ -64,7 +117,7 @@ class Clients extends React.Component {
 				<hr/>
 				<div className="row">
 					<div className="col-lg-12">
-						<ClientsTable clients={this.props.clients.collection} />
+						<ClientsTable clients={this.props.clients.collection} onDelete={this.del}/>
 					</div>
 				</div>
 			</Page>
@@ -81,7 +134,7 @@ function select(state){
 export default connect(
 	select, 
 	{
-		pushPath,
-		fetchClients
+		fetchClients,
+		deleteClient
 	}
 )(Clients)

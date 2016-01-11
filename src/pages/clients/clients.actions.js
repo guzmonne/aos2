@@ -1,8 +1,29 @@
-import {RESET_ACTIVE_CLIENT, LOADING_CLIENTS, CLIENT_UPDATE_SUCCESS, CLIENT_UPDATE_ERROR, CLIENT_FETCH_SUCCESS, CLIENT_FETCH_ERROR, CLIENTS_FETCH_SUCCESS, CLIENTS_FETCH_ERROR, CLIENT_CREATE_SUCCESS, CLIENT_CREATE_ERROR} from '../../state/action-types.js'
+import {RESET_ACTIVE_CLIENT, LOADING_CLIENTS, CLIENT_DELETE_SUCCESS, CLIENT_DELETE_ERROR, CLIENT_UPDATE_SUCCESS, CLIENT_UPDATE_ERROR, CLIENT_FETCH_SUCCESS, CLIENT_FETCH_ERROR, CLIENTS_FETCH_SUCCESS, CLIENTS_FETCH_ERROR, CLIENT_CREATE_SUCCESS, CLIENT_CREATE_ERROR} from '../../state/action-types.js'
 import { pushPath } from 'redux-simple-router'
 import Parse from 'parse'
 import Client from '../../models/client.model.js'
 import _ from 'lodash'
+
+export function deleteClient(clientId){
+	return (dispatch, getState) => {
+		if (!clientId) return
+
+		const handleSuccess = () => {
+			const collection = getState().
+				clients.
+				collection.
+				filter(c => c.id !== clientId )
+			
+			dispatch(deleteClientSuccess(collection))
+		}
+		
+		const handleError = (error) => dispatch(deleteClientError(error))
+		
+		const client = new Client({id: clientId})
+
+		client.destroy().then(handleSuccess, handleError)
+	}
+}
 
 export function updateClient(rawData){
 	return (dispatch, getState) => {
@@ -100,6 +121,20 @@ export function updateClientSuccess(){
 export function updateClientError(){
 	return {
 		type: CLIENT_UPDATE_ERROR
+	}
+}
+
+
+export function deleteClientSuccess(collection){
+	return {
+		type: CLIENT_DELETE_SUCCESS,
+		collection
+	}
+}
+
+export function deleteClientError(){
+	return {
+		type: CLIENT_DELETE_ERROR
 	}
 }
 
