@@ -20,6 +20,8 @@ export function deleteClient(clientId){
 		const handleError = (error) => dispatch(deleteClientError(error))
 		
 		const client = new Client({id: clientId})
+		
+		dispatch(loadingClients())
 
 		client.destroy().then(handleSuccess, handleError)
 	}

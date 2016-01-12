@@ -12,6 +12,7 @@ import ClientsCreate from './pages/clients/clients-create.js'
 import ClientsEdit from './pages/clients/clients-edit.js'
 import Account from './components/configuration/account.js'
 import Users from './components/configuration/users.js'
+import Devices from './pages/devices/devices.js'
 
 syncReduxAndRouter(browserHistory, store)
 
@@ -26,9 +27,13 @@ export default (props) => {
 						<Route path="account" component={Account}/>
 						<Route path="users" component={Users}/>
 					</Route>
+					 
 					<Route path="clients" component={Clients} />
 					<Route path="clients/create" component={ClientsCreate} />
 					<Route path="clients/edit/:id" component={ClientsEdit} />
+
+					<Route path="devices" component={Devices} />
+
 				</Route>
 				<Route path="/users/login" component={Login} />
 			</Router>

@@ -1,6 +1,40 @@
 import React from 'react'
+import { editTooltip, newServiceRequestTooltip, deleteTooltip } from './tooltips.js'
+import { OverlayTrigger } from 'react-bootstrap'
+import { Link } from 'react-router'
 
 const loading = "fa fa-spinner fa-spin"
+
+export function EditRowButton({id, to}) {
+	return (
+		<OverlayTrigger placement="top" overlay={editTooltip}>
+			<Link to={to} className="btn btn-warning btn-with-sup btn-outline">
+				<i className="fa fa-pencil"></i>
+			</Link>
+		</OverlayTrigger>
+	)
+}
+
+export function NewServiceRequestRowButton (){
+	return (
+		<OverlayTrigger placement="top" overlay={newServiceRequestTooltip}>
+			<button className="btn btn-success btn-with-sup btn-outline">
+				<i className="fa fa-clipboard"></i>
+				<sup><i className="fa fa-plus"></i></sup>
+			</button>
+		</OverlayTrigger>
+	)
+}
+
+export function DeleteRowButton({onDelete}){
+	return (
+		<OverlayTrigger placement="top" overlay={deleteTooltip}>
+			<button onClick={onDelete} className="btn btn-danger btn-with-sup btn-outline">
+				<i className="fa fa-trash"></i>
+			</button>
+		</OverlayTrigger>
+	)
+}
 
 export function EditButton(props){
 	return 	<button {...props} className={"btn btn-warning " + props.className} disabled={props.loading}>

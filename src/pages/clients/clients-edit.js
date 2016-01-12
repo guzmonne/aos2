@@ -9,8 +9,6 @@ class ClientsEdit extends React.Component {
 		super(props)
 		this.displayName = 'ClientsEdit'
 		this.title = 'Editar Cliente'
-		this.pageTitle = <span><i className="fa fa-users orange"></i>{' ' + this.title}</span>
-		this.loadingPageTitle = <span><i className="fa fa-spinner fa-spin orange"></i>{' ' + this.title}</span>
 		this.breadCrumbs = [{txt: 'Clientes', to: '/clients'}, {txt: 'Editar'}]
 		this.submit = this.submit.bind(this)
 	}
@@ -25,6 +23,9 @@ class ClientsEdit extends React.Component {
 	}
 
 	render(){
+		const pageTitle = <span><i className="fa fa-users orange"></i>{' ' + this.title + ': ' + this.props.clients.activeClient.get('name')}</span>
+		const loadingPageTitle = <span><i className="fa fa-spinner fa-spin orange"></i>{' ' + this.title}</span>
+
 		const {loading} = this.props.clients
 
 		const clientsForm = <ClientsForm  loading={this.props.clients.loading}
@@ -32,7 +33,7 @@ class ClientsEdit extends React.Component {
 																			client={this.props.clients.activeClient.attributes} />
 
 		return (
-			<Page title={loading ? this.loadingPageTitle : this.pageTitle} breadCrumbs={this.breadCrumbs}>
+			<Page title={loading ? loadingPageTitle : pageTitle} breadCrumbs={this.breadCrumbs}>
 				<div className="container">
 					{loading ? <h3><i className="fa fa-spinner fa-spin orange"></i>{' Loading...'}</h3> : clientsForm}
 				</div>
