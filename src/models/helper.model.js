@@ -9,6 +9,14 @@ const Helper = Parse.Object.extend('Helper', {}, {
 
 	default(){
 		return new Helper(Object.assign({}, this.defaults))
+	},
+
+	subcategory(parent, value){
+		return new Helper({
+			key: 'subcategory',
+			value,
+			parent
+		})
 	}
 });
 

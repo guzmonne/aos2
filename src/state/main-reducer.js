@@ -6,6 +6,7 @@ import usersReducer from '../components/configuration/users.reducer.js'
 import mainLayoutReducer from '../pages/default/main.layout.reducer.js'
 import clientsReducer from '../pages/clients/clients.reducer.js'
 import devicesReducer from '../pages/devices/devices.reducer.js'
+import generalReducer from '../pages/configuration/general.reducer.js'
 
 export default function mainReducer( state={}, action){
 	return {
@@ -16,6 +17,7 @@ export default function mainReducer( state={}, action){
 		users: usersReducer(state.users, action),
 		mainLayout: mainLayoutReducer(state.mainLayout, action),
 		clients: clientsReducer(state.clients, action),
-		devices: devicesReducer(state.devices, action)
+		devices: devicesReducer(state.devices, action),
+		general: generalReducer(state.general, action)
 	}
 }
