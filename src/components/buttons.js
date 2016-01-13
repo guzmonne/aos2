@@ -5,6 +5,23 @@ import { Link } from 'react-router'
 
 const loading = "fa fa-spinner fa-spin"
 
+export function EyeRowButton() {
+	return (
+		<button className="btn btn-primary btn-with-sup btn-outline">
+			<i className="fa fa-eye"></i>
+		</button>
+	)
+}
+
+
+export function AddRowButton() {
+	return (
+		<button className="btn btn-success btn-with-sup btn-outline">
+			<i className="fa fa-plus"></i>
+		</button>
+	)
+}
+
 export function EditRowButton({id, to}) {
 	return (
 		<OverlayTrigger placement="top" overlay={editTooltip}>

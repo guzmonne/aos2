@@ -12,7 +12,9 @@ import ClientsCreate from './pages/clients/clients-create.js'
 import ClientsEdit from './pages/clients/clients-edit.js'
 import Account from './components/configuration/account.js'
 import Users from './components/configuration/users.js'
+import GeneralConfig from './pages/configuration/general.js'
 import Devices from './pages/devices/devices.js'
+
 
 syncReduxAndRouter(browserHistory, store)
 
@@ -23,7 +25,7 @@ export default (props) => {
 				<Route path="/" component={MainLayout}>
 					<IndexRoute component={Dashboard} />
 					<Route path="configuration" component={Configuration}>
-						<IndexRoute component={() => <div>General</div>} />
+						<IndexRoute component={GeneralConfig} />
 						<Route path="account" component={Account}/>
 						<Route path="users" component={Users}/>
 					</Route>

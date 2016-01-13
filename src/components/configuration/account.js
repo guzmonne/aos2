@@ -8,7 +8,6 @@ class Account extends React.Component {
 	constructor(props) {
     super(props);
     this.displayName = 'Account';
-		this.counter = 1
 	}
 
 	componentWillMount(){
