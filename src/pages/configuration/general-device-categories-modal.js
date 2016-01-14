@@ -14,7 +14,7 @@ export default class DeviceCategoryModal extends React.Component {
   }
 
   render(){
-    const {showModal, onClose, container, category, onAdd} = this.props
+    const {showModal, onClose, category, onAdd} = this.props
 
   	let subcategory = ''
   	
@@ -43,7 +43,6 @@ export default class DeviceCategoryModal extends React.Component {
       <Modal
         show={showModal}
         onHide={onClose}
-        container={container}
         aria-labelledby="contained-modal-title"
         bsSize="small"
         backdrop={false}

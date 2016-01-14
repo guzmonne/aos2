@@ -1,7 +1,45 @@
-import {CREATING_DEVICE_CATEGORY, CREATE_DEVICE_CATEGORY_SUCCESS, CREATE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_SUBCATEGORY_SUCCESS, CREATE_DEVICE_SUBCATEGORY_ERROR, FETCHING_DEVICE_CATEGORY_HELPERS, FETCH_DEVICE_CATEGORY_SUCCESS, FETCH_DEVICE_CATEGORY_ERROR} from '../../state/action-types.js'
+import {CREATING_DEVICE_CATEGORY, TOGGLE_DEVICE_CATEGORY_SUCCESS, TOGGLE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_CATEGORY_SUCCESS, CREATE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_SUBCATEGORY_SUCCESS, CREATE_DEVICE_SUBCATEGORY_ERROR, FETCHING_DEVICE_CATEGORY_HELPERS, FETCH_DEVICE_CATEGORY_SUCCESS, FETCH_DEVICE_CATEGORY_ERROR} from '../../state/action-types.js'
 import Rx from 'rx'
 import Parse from 'parse'
 import Helper from '../../models/helper.model.js'
+
+export function toggleDeviceSubcategoryHelper(subcategory){
+	return (dispatch, getState) => {
+		const categories = [...getState().general.categories]
+
+		Rx.Observable.
+			fromPromise( (new Helper({id: subcategory.id})).save('enabled', !subcategory.enabled) ).
+			subscribe(
+				subcategory => null,
+				error => dispatch(toggleDeviceCategoryError(error))
+			)
+
+		let sub = categories.
+			find(c => c.id === subcategory.parent).
+			subcategories.
+			find(s => s.id === subcategory.id).
+			enabled = !subcategory.enabled
+
+		dispatch(toggleDeviceCategorySuccess(categories))
+	}
+}
+
+export function toggleDeviceCategoryHelper(category){
+	return (dispatch, getState) => {
+		const categories = [...getState().general.categories]
+		const cat = categories.find(c => c.id === category.id)
+
+		Rx.Observable.
+			fromPromise( (new Helper({id: category.id})).save('enabled', !category.enabled) ).
+			subscribe(
+				category => null,
+				error => dispatch(toggleDeviceCategoryError(error))
+			)
+
+		car.enabled = !cat.enabled
+		dispatch(toggleDeviceCategorySuccess(categories))
+	}
+}
 
 export function createDeviceSubcategoryHelper(categoryId, value){
 	return (dispatch, getState) => {
@@ -9,16 +47,15 @@ export function createDeviceSubcategoryHelper(categoryId, value){
 		let categories = [...getState().general.categories]
 		const category = categories.find(c => c.id === categoryId)
 
-		category.subcategories = [...category.subcategories, subcategory.attributes]
+		category.subcategories = [...category.subcategories, Object.assign({}, subcategory.attributes, {id: subcategory.id})]
 
 		dispatch(createDeviceSubcategorySuccess(categories))
 
 		Rx.Observable.
 			fromPromise(subcategory.save()).
 			subscribe(
-				(subcategory) => console.log(subcategory),
-				(error)       => dispatch(createDeviceSubcategoryError(error)),
-				()            => console.log('Subcategory save completed')
+				(subcategory) => { return null },
+				(error)       => dispatch(createDeviceSubcategoryError(error))
 			)
 	}
 }
@@ -31,15 +68,10 @@ export function createDeviceCategoryHelper(value){
 
 		Rx.Observable.
 			fromPromise(category.save()).
-			map(category => ({
-				id: category.id,
-				value: category.get('value'),
-				subcategories: []
-			})).
+			map(category => Object.assign({}, category.attributes, {id: category.id, subcategories: []})).
 			subscribe(
 				category => dispatch(createDeviceCategorySuccess( [...getState().general.categories, category] )),
-				error => dispatch(createDeviceCategoryError(error)),
-				() => console.log('Catergory save completed')
+				error => dispatch(createDeviceCategoryError(error))
 			)
 
 	}
@@ -58,18 +90,21 @@ export function fetchDeviceCategoryHelpers(force=false){
 			fromPromise( (new Parse.Query(Helper)).equalTo('key', 'category').find() ).
 			flatMap(categories => categories.map(category => Rx.Observable.
 				fromPromise( (new Parse.Query(Helper)).equalTo('parent', category.id).find() ).
-				map(subcategories => ({
-					id: category.id,
-					value: category.get('value'),
-					subcategories: subcategories.map(s => s.attributes)
-				}))
+				map(subcategories => Object.assign(
+					{},
+					category.attributes,
+					{id: category.id, subcategories: subcategories.map(s => Object.assign(
+						{},
+						s.attributes,
+						{id: s.id}
+					))}
+				))
 			)).
 			mergeAll().
 			reduce( (categories, category) => [...categories, category], [] ).
 			subscribe(
 				categories => dispatch(fetchDeviceCategorySuccess(categories)),
-				error    => dispatch(fetchDeviceCategoryError(error)),
-				()       => console.log('Fetch Device Category Helpers completed.')
+				error    => dispatch(fetchDeviceCategoryError(error))
 			)
 	}
 }
@@ -96,6 +131,20 @@ export function createDeviceCategorySuccess(categories){
 export function createDeviceCategoryError(error){
 	return {
 		type: CREATE_DEVICE_CATEGORY_ERROR,
+		error
+	}
+}
+
+export function toggleDeviceCategorySuccess(categories){
+	return {
+		type: TOGGLE_DEVICE_CATEGORY_SUCCESS,
+		categories
+	}
+}
+
+export function toggleDeviceCategoryError(error){
+	return {
+		type: TOGGLE_DEVICE_CATEGORY_ERROR,
 		error
 	}
 }

@@ -3,6 +3,7 @@ import {thead} from './general-device-categories-thead.js'
 import Tr from './general-device-categories-row.js'
 import DeviceCategoryModal from './general-device-categories-modal.js'
 import { BtnRowToolbar, AddRowButton } from '../../components/buttons.js'
+import DeleteDialog from '../../components/delete-dialog.js'
 
 class GeneralDeviceCategories extends React.Component {
 	constructor(props){
@@ -10,9 +11,10 @@ class GeneralDeviceCategories extends React.Component {
 
 		this.displayName = 'GeneralDeviceCategories'
 		this.state = {
-			showSubcategoryModal : false,
-			showCategoryModal    : false,
-			category             : null
+			showSubcategoryModal     : false,
+			showCategoryModal        : false,
+			showToggleCategoryDialog : false,
+			category                 : null
 		}
 	}
 
@@ -24,12 +26,17 @@ class GeneralDeviceCategories extends React.Component {
 		const showSubcategoryModal = (category) => {
 			this.setState({category, showSubcategoryModal: true})
 		}
-		const showCategoryModal = () => {
-			this.setState({showCategoryModal: true})
-		}
+		const showCategoryModal = () => this.setState({
+			showCategoryModal: true
+		})
 		const onClose = () => this.setState({
-			showSubcategoryModal: false,
-			showCategoryModal: false
+			showSubcategoryModal     : false,
+			showCategoryModal        : false,
+			showToggleCategoryDialog : false
+		})
+		const onToggleCategory = (category) => this.setState({
+			showToggleCategoryDialog : true,
+			category                 : category
 		})
 		const onAddSubcategory = (subcategory) => { 
 			this.props.onAddSubcategory(this.state.category.id, subcategory)
@@ -39,17 +46,30 @@ class GeneralDeviceCategories extends React.Component {
 			this.props.onAddCategory(category)
 			onClose()
 		}
+		const toggleCategory = () => {
+			this.props.onToggleCategory(this.state.category)
+			onClose()
+		}
+		const row = (category, i) => {
+			return (
+				<Tr
+					key={i}
+					category={category}
+					onCreate={showSubcategoryModal.bind(this, category)}
+					onToggleCategory={onToggleCategory.bind(this, category)}
+					onToggleSubcategory={this.props.onToggleSubcategory}/>
+			)
+		}
 		const table = (
 			<table className="table table-hover table-striped">
 				<thead>
 					{thead}
 				</thead>
 				<tbody>
-					{categories.map( (category, i) => {
-						return (
-							<Tr key={i} category={category} onClick={showSubcategoryModal.bind(this, category)}/>
-						)
-					} )}
+					{categories.filter(c => c.enabled).map( row )}
+					{categories.filter(c => !c.enabled).map( row )}
+				</tbody>
+				<tfoot>
 					<tr>
 						<td colSpan="3" className="text-center">
 							<BtnRowToolbar buttons={[
@@ -57,7 +77,7 @@ class GeneralDeviceCategories extends React.Component {
 							]}/>
 						</td>
 					</tr>
-				</tbody>
+				</tfoot>
 			</table>
 		)
 		
@@ -73,7 +93,6 @@ class GeneralDeviceCategories extends React.Component {
 				<DeviceCategoryModal
 					showModal={this.state.showSubcategoryModal}
 					onClose={onClose}
-					container={this}
 					category={this.state.category && this.state.category.value}
 					onAdd={onAddSubcategory}
 				/>
@@ -81,9 +100,20 @@ class GeneralDeviceCategories extends React.Component {
 				<DeviceCategoryModal
 					showModal={this.state.showCategoryModal}
 					onClose={onClose}
-					container={this}
 					onAdd={onAddCategory}
 				/>
+
+				<DeleteDialog
+					showModal={this.state.showToggleCategoryDialog}
+					closeModal={onClose}
+					confirmDel={toggleCategory}
+				>
+					<p className="text-center">
+						¿Esta seguro que desea 
+						{this.state.category && this.state.category.enabled ? ' desactivar ': ' activar '}
+						esta categoría?
+					</p>
+				</DeleteDialog>
 
 			</div>
 		)

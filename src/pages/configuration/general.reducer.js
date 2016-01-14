@@ -1,4 +1,4 @@
-import {CREATING_DEVICE_CATEGORY, CREATE_DEVICE_CATEGORY_SUCCESS, CREATE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_SUBCATEGORY_SUCCESS, CREATE_DEVICE_SUBCATEGORY_ERROR, FETCHING_DEVICE_CATEGORY_HELPERS, FETCH_DEVICE_CATEGORY_SUCCESS, FETCH_DEVICE_CATEGORY_ERROR} from '../../state/action-types.js'
+import {CREATING_DEVICE_CATEGORY, TOGGLE_DEVICE_CATEGORY_SUCCESS, TOGGLE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_CATEGORY_SUCCESS, CREATE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_SUBCATEGORY_SUCCESS, CREATE_DEVICE_SUBCATEGORY_ERROR, FETCHING_DEVICE_CATEGORY_HELPERS, FETCH_DEVICE_CATEGORY_SUCCESS, FETCH_DEVICE_CATEGORY_ERROR} from '../../state/action-types.js'
 
 const defaultState = {
 	categories: [],
@@ -59,6 +59,18 @@ export default function generalConfigReducer(state=defaultState, action){
 				{},
 				state,
 				{categoriesError: null, isCreatingCategory: false}
+			)
+		case TOGGLE_DEVICE_CATEGORY_SUCCESS:
+			return Object.assign(
+				{},
+				state,
+				{categories: action.categories, categoriesError: null}
+			)
+		case TOGGLE_DEVICE_CATEGORY_ERROR:
+			return Object.assign(
+				{},
+				state,
+				{categoriesError: null}
 			)
 		default:
 			return state

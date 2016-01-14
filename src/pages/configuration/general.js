@@ -1,7 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import GeneralDeviceCategories from './general-device-categories.js'
-import {fetchDeviceCategoryHelpers, createDeviceSubcategoryHelper, createDeviceCategoryHelper} from './general.actions.js'
+import {
+	fetchDeviceCategoryHelpers,
+	createDeviceSubcategoryHelper,
+	createDeviceCategoryHelper,
+	toggleDeviceCategoryHelper,
+	toggleDeviceSubcategoryHelper} from './general.actions.js'
 
 class GeneralConfig extends React.Component {
 	constructor(props){
@@ -26,6 +31,8 @@ class GeneralConfig extends React.Component {
 							categories={categories}
 							onAddSubcategory={this.props.createDeviceSubcategoryHelper}
 							onAddCategory={this.props.createDeviceCategoryHelper}
+							onToggleCategory={this.props.toggleDeviceCategoryHelper}
+							onToggleSubcategory={this.props.toggleDeviceSubcategoryHelper}
 						/>
 
 					</div>
@@ -47,5 +54,7 @@ export default connect(
 		fetchDeviceCategoryHelpers,
 		createDeviceCategoryHelper,
 		createDeviceSubcategoryHelper,
+		toggleDeviceCategoryHelper,
+		toggleDeviceSubcategoryHelper
 	}
 )(GeneralConfig)
