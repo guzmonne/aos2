@@ -17,6 +17,13 @@ const Helper = Parse.Object.extend('Helper', {}, {
 			value,
 			parent
 		})
+	},
+
+	category(value){
+		return new Helper({
+			key: 'category',
+			value
+		})
 	}
 });
 

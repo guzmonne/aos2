@@ -1,9 +1,9 @@
-import {CREATE_DEVICE_SUBCATEGORY_SUCCESS, CREATE_DEVICE_SUBCATEGORY_ERROR, FETCHING_DEVICE_CATEGORY_HELPERS, FETCH_DEVICE_CATEGORY_SUCCESS, FETCH_DEVICE_CATEGORY_ERROR} from '../../state/action-types.js'
+import {CREATING_DEVICE_CATEGORY, CREATE_DEVICE_CATEGORY_SUCCESS, CREATE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_SUBCATEGORY_SUCCESS, CREATE_DEVICE_SUBCATEGORY_ERROR, FETCHING_DEVICE_CATEGORY_HELPERS, FETCH_DEVICE_CATEGORY_SUCCESS, FETCH_DEVICE_CATEGORY_ERROR} from '../../state/action-types.js'
 import Rx from 'rx'
 import Parse from 'parse'
 import Helper from '../../models/helper.model.js'
 
-export function createDeviceCategoryHelper(categoryId, value){
+export function createDeviceSubcategoryHelper(categoryId, value){
 	return (dispatch, getState) => {
 		const subcategory = Helper.subcategory(categoryId, value)
 		let categories = [...getState().general.categories]
@@ -20,6 +20,28 @@ export function createDeviceCategoryHelper(categoryId, value){
 				(error)       => dispatch(createDeviceSubcategoryError(error)),
 				()            => console.log('Subcategory save completed')
 			)
+	}
+}
+
+export function createDeviceCategoryHelper(value){
+	return (dispatch, getState) => {
+		const category = Helper.category(value) 
+
+		dispatch(creatingDeviceCategory())
+
+		Rx.Observable.
+			fromPromise(category.save()).
+			map(category => ({
+				id: category.id,
+				value: category.get('value'),
+				subcategories: []
+			})).
+			subscribe(
+				category => dispatch(createDeviceCategorySuccess( [...getState().general.categories, category] )),
+				error => dispatch(createDeviceCategoryError(error)),
+				() => console.log('Catergory save completed')
+			)
+
 	}
 }
 
@@ -55,6 +77,26 @@ export function fetchDeviceCategoryHelpers(force=false){
 export function fetchingDeviceCategoryHelpers(){
 	return {
 		type: FETCHING_DEVICE_CATEGORY_HELPERS
+	}
+}
+
+export function creatingDeviceCategory(){
+	return {
+		type: CREATING_DEVICE_CATEGORY
+	}
+}
+
+export function createDeviceCategorySuccess(categories){
+	return {
+		type: CREATE_DEVICE_CATEGORY_SUCCESS,
+		categories
+	}
+}
+
+export function createDeviceCategoryError(error){
+	return {
+		type: CREATE_DEVICE_CATEGORY_ERROR,
+		error
 	}
 }
 

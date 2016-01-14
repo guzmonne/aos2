@@ -2,7 +2,7 @@ import React from 'react'
 import {thead} from './general-device-categories-thead.js'
 import Tr from './general-device-categories-row.js'
 import DeviceCategoryModal from './general-device-categories-modal.js'
-
+import { BtnRowToolbar, AddRowButton } from '../../components/buttons.js'
 
 class GeneralDeviceCategories extends React.Component {
 	constructor(props){
@@ -10,8 +10,9 @@ class GeneralDeviceCategories extends React.Component {
 
 		this.displayName = 'GeneralDeviceCategories'
 		this.state = {
-			showModal: false,
-			category : null
+			showSubcategoryModal : false,
+			showCategoryModal    : false,
+			category             : null
 		}
 	}
 
@@ -20,12 +21,22 @@ class GeneralDeviceCategories extends React.Component {
 		const spinner = (
 			<h2><i className="fa fa-spinner fa-spin"></i>{' Loading...'}</h2>
 		)
-		const showModal = (category) => {
-			this.setState({category, showModal: true})
+		const showSubcategoryModal = (category) => {
+			this.setState({category, showSubcategoryModal: true})
 		}
-		const onClose = () => this.setState({showModal: false})
-		const onAdd = (subcategory) => { 
-			this.props.onAdd(this.state.category.id, subcategory)
+		const showCategoryModal = () => {
+			this.setState({showCategoryModal: true})
+		}
+		const onClose = () => this.setState({
+			showSubcategoryModal: false,
+			showCategoryModal: false
+		})
+		const onAddSubcategory = (subcategory) => { 
+			this.props.onAddSubcategory(this.state.category.id, subcategory)
+			onClose()
+		}
+		const onAddCategory = (category) => {
+			this.props.onAddCategory(category)
 			onClose()
 		}
 		const table = (
@@ -36,9 +47,16 @@ class GeneralDeviceCategories extends React.Component {
 				<tbody>
 					{categories.map( (category, i) => {
 						return (
-							<Tr key={i} category={category} onClick={showModal.bind(this, category)}/>
+							<Tr key={i} category={category} onClick={showSubcategoryModal.bind(this, category)}/>
 						)
 					} )}
+					<tr>
+						<td colSpan="3" className="text-center">
+							<BtnRowToolbar buttons={[
+								<AddRowButton onClick={showCategoryModal}/>
+							]}/>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		)
@@ -53,11 +71,18 @@ class GeneralDeviceCategories extends React.Component {
 				{categories.length === 0 ? spinner : table}
 
 				<DeviceCategoryModal
-					showModal={this.state.showModal}
+					showModal={this.state.showSubcategoryModal}
 					onClose={onClose}
 					container={this}
 					category={this.state.category && this.state.category.value}
-					onAdd={onAdd}
+					onAdd={onAddSubcategory}
+				/>
+
+				<DeviceCategoryModal
+					showModal={this.state.showCategoryModal}
+					onClose={onClose}
+					container={this}
+					onAdd={onAddCategory}
 				/>
 
 			</div>

@@ -14,9 +14,9 @@ export function EyeRowButton() {
 }
 
 
-export function AddRowButton() {
+export function AddRowButton(props) {
 	return (
-		<button className="btn btn-success btn-with-sup btn-outline">
+		<button {...props} className="btn btn-success btn-with-sup btn-outline">
 			<i className="fa fa-plus"></i>
 		</button>
 	)
