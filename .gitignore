@@ -2,3 +2,5 @@ node_modules/
 public/
 .parse/
 cloud/.parse*
+.idea/
+npm-debug.log
