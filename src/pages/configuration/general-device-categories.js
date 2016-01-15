@@ -13,7 +13,6 @@ class GeneralDeviceCategories extends React.Component {
 		this.showCategoryModal    = this.showCategoryModal.bind(this)
 		this.onToggleCategory     = this.onToggleCategory.bind(this)
 		this.onAddCategory        = this.onAddCategory.bind(this)
-		this.selectCategory       = this.selectCategory.bind(this)
 		this.onAddSubcategory     = this.onAddSubcategory.bind(this)
 		this.toggleCategory       = this.toggleCategory.bind(this)
 		this.onClose              = this.onClose.bind(this)
@@ -24,8 +23,7 @@ class GeneralDeviceCategories extends React.Component {
 			showCategoryModal          : false,
 			showToggleCategoryDialog   : false,
 			showDeleteCategoriesDialog : false,
-			category                   : null,
-			categories                 : []
+			category                   : null
 		}
 	}
 
@@ -36,7 +34,6 @@ class GeneralDeviceCategories extends React.Component {
 	onAddSubcategory(subcategory){
 		this.props.onAddSubcategory(this.state.category.id, subcategory)
 		this.onClose()
-		
 	}
 
 	showCategoryModal() {
@@ -59,19 +56,6 @@ class GeneralDeviceCategories extends React.Component {
 		this.props.onToggleCategory(this.state.category)
 		this.onClose()
 	}
-
-	selectCategory(category){
-		let categories;
-		const index = this.state.categories.indexOf(category)
-
-		if(index < 0){
-			categories = [...this.state.categories, category]
-		} else {
-			categories = [...this.state.categories.slice(0, index), ...this.state.categories.slice(index + 1)]
-		}
-
-		this.setState({ categories })
-	}
 	
 	onClose(){
 		this.setState({
@@ -84,8 +68,7 @@ class GeneralDeviceCategories extends React.Component {
 
 	onDelete(e){
 		e.preventDefault()
-		this.props.deleteCategoryHelpers(this.state.categories.map(c => c.id))
-		this.setState({categories: []})
+		this.props.deleteCategoryHelpers()
 		this.onClose()
 	}
 
@@ -98,9 +81,8 @@ class GeneralDeviceCategories extends React.Component {
 				<Tr
 					key={i}
 					category={category}
-					checked={this.state.categories.indexOf(category) > -1}
 					onCreate={this.showSubcategoryModal.bind(this, category)}
-					onSelect={this.selectCategory.bind(this, category)}
+					onSelect={this.props.toggleCategorySelection.bind(this, category)}
 					onToggleCategory={this.onToggleCategory.bind(this, category)}
 					onToggleSubcategory={this.props.onToggleSubcategory}/>
 			)
@@ -131,7 +113,7 @@ class GeneralDeviceCategories extends React.Component {
 				</tbody>
 			</table>
 		)
-		
+
 		return (
 			<div className="modal-container">
 				
@@ -142,7 +124,7 @@ class GeneralDeviceCategories extends React.Component {
 				<button
 					className="btn btn-danger btn-xs pull-right margin-bottom"
 					onClick={() => this.setState({showDeleteCategoriesDialog: true})}
-					disabled={this.state.categories.length === 0}
+					disabled={categories.filter(c => c.selected).length === 0}
 				>
 					<i className="fa fa-trash"></i>
 				</button>

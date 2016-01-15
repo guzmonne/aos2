@@ -1,7 +1,7 @@
 import React from 'react'
 import { BtnRowToolbar, EyeRowButton } from '../../components/buttons.js'
 
-export default ({category, onCreate, onToggleCategory, onToggleSubcategory, checked=false, onSelect=function(){}}) => {
+export default ({category, onCreate, onToggleCategory, onToggleSubcategory, onSelect=function(){}}) => {
 	const click = (e) => {
 		e.preventDefault()
 		onCreate()
@@ -27,7 +27,7 @@ export default ({category, onCreate, onToggleCategory, onToggleSubcategory, chec
 	return (
 		<tr className={category.enabled ? null : "row-disabled"} style={{verticalAlign: 'middle'}}>
 			<td>
-				<input type="checkbox" checked={checked} onChange={onSelect.bind(this, category)}/>
+				<input type="checkbox" checked={category.selected} onChange={onSelect}/>
 			</td>
 			<td>
 				{category.enabled ? 

@@ -7,7 +7,8 @@ import {
 	createDeviceCategoryHelper,
 	toggleDeviceCategoryHelper,
 	toggleDeviceSubcategoryHelper,
-	deleteDeviceCategoryHelpers} from './general.actions.js'
+	deleteDeviceCategoryHelpers,
+	toggleDeviceCategorySelectionHelper} from './general.actions.js'
 
 class GeneralConfig extends React.Component {
 	constructor(props){
@@ -35,6 +36,7 @@ class GeneralConfig extends React.Component {
 							onToggleCategory={this.props.toggleDeviceCategoryHelper}
 							onToggleSubcategory={this.props.toggleDeviceSubcategoryHelper}
 							deleteCategoryHelpers={this.props.deleteDeviceCategoryHelpers}
+							toggleCategorySelection={this.props.toggleDeviceCategorySelectionHelper}
 						/>
 
 					</div>
@@ -58,6 +60,7 @@ export default connect(
 		createDeviceSubcategoryHelper,
 		toggleDeviceCategoryHelper,
 		toggleDeviceSubcategoryHelper,
-		deleteDeviceCategoryHelpers
+		deleteDeviceCategoryHelpers,
+		toggleDeviceCategorySelectionHelper
 	}
 )(GeneralConfig)

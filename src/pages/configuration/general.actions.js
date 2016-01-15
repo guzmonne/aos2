@@ -1,21 +1,22 @@
-import {DELETE_DEVICE_CATEGORY_OPTIMISTICALLY, DELETE_DEVICE_CATEGORY_SUCCESS, DELETE_DEVICE_CATEGORY_ERROR, CREATING_DEVICE_CATEGORY, TOGGLE_DEVICE_CATEGORY_SUCCESS, TOGGLE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_CATEGORY_SUCCESS, CREATE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_SUBCATEGORY_SUCCESS, CREATE_DEVICE_SUBCATEGORY_ERROR, FETCHING_DEVICE_CATEGORY, FETCH_DEVICE_CATEGORY_SUCCESS, FETCH_DEVICE_CATEGORY_ERROR} from '../../state/action-types.js'
+import {TOGGLE_DEVICE_CATEGORY_SELECTION, DELETE_DEVICE_CATEGORY_OPTIMISTICALLY, DELETE_DEVICE_CATEGORY_SUCCESS, DELETE_DEVICE_CATEGORY_ERROR, CREATING_DEVICE_CATEGORY, TOGGLE_DEVICE_CATEGORY_SUCCESS, TOGGLE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_CATEGORY_SUCCESS, CREATE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_SUBCATEGORY_SUCCESS, CREATE_DEVICE_SUBCATEGORY_ERROR, FETCHING_DEVICE_CATEGORY, FETCH_DEVICE_CATEGORY_SUCCESS, FETCH_DEVICE_CATEGORY_ERROR} from '../../state/action-types.js'
 import Rx from 'rx'
 import Parse from 'parse'
+import _ from 'lodash'
 import Helper from '../../models/helper.model.js'
 
-export function deleteDeviceCategoryHelpers(categoryIds){
+export function deleteDeviceCategoryHelpers(){
 	return (dispatch, getState) => {
-		const categories = getState().general.categories.
-			filter(category => categoryIds.indexOf(category.id) === -1)
+		const categories = getState().general.categories.filter(c => c.selected)
+		const subcategories = [].concat(...categories.map(c => c.subcategories))
 
-		dispatch(deleteDeviceCategoryHelpersOptimistically(categories))
+		console.log([...categories, ...subcategories])
+
+		dispatch(deleteDeviceCategoryHelpersOptimistically(getState().general.categories.
+			filter(c => !c.selected)))
 
 		Rx.Observable.
-			fromArray(categoryIds).
-			map(categoryId => new Helper({id: categoryId})).
-			map(category => Rx.Observable.
-				fromPromise(category.destroy())
-			).
+			fromArray( [...categories, ...subcategories] ).
+			map(category => Rx.Observable.fromPromise( (new Helper({id: category.id})).destroy() ) ).
 			mergeAll().
 			subscribe(
 				result => dispatch(deleteDeviceCategoryHelpersSuccess(result)),
@@ -65,17 +66,32 @@ export function toggleDeviceCategoryHelper(category){
 export function createDeviceSubcategoryHelper(categoryId, value){
 	return (dispatch, getState) => {
 		const subcategory = Helper.subcategory(categoryId, value)
-		let categories = [...getState().general.categories]
-		const category = categories.find(c => c.id === categoryId)
+		const _id         = _.uniqueId('subcategory')
+		let categories    = [...getState().general.categories]
+		const category    = categories.find(c => c.id === categoryId)
 
-		category.subcategories = [...category.subcategories, Object.assign({}, subcategory.attributes, {id: subcategory.id})]
+		console.log(_id)
+
+		category.subcategories = [...category.subcategories, Object.assign({}, subcategory.attributes, {_id: _id})]
 
 		dispatch(createDeviceSubcategorySuccess(categories))
 
 		Rx.Observable.
 			fromPromise(subcategory.save()).
 			subscribe(
-				(subcategory) => { return null },
+				(subcategory) => {
+					const categories = [...getState().general.categories]
+
+					categories.find(c => c.id === subcategory.get('parent')).
+						subcategories.
+						find(s => s._id === _id).
+						id = subcategory.id
+
+					console.log(categories);
+
+					dispatch(createDeviceSubcategorySuccess(categories))
+
+				},
 				(error)       => dispatch(createDeviceSubcategoryError(error))
 			)
 	}
@@ -127,6 +143,19 @@ export function fetchDeviceCategoryHelpers(force=false){
 				categories => dispatch(fetchDeviceCategorySuccess(categories)),
 				error    => dispatch(fetchDeviceCategoryError(error))
 			)
+	}
+}
+
+export function toggleDeviceCategorySelectionHelper(category){
+	return (dispatch, getState) => {
+		const categories = [...getState().general.categories]
+
+		categories.find(c => c.id === category.id).selected = !category.selected
+
+		dispatch({
+			type: TOGGLE_DEVICE_CATEGORY_SELECTION,
+			categories
+		})
 	}
 }
 
