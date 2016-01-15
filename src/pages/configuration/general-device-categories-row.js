@@ -1,7 +1,7 @@
 import React from 'react'
 import { BtnRowToolbar, EyeRowButton } from '../../components/buttons.js'
 
-export default ({category, onCreate, onToggleCategory, onToggleSubcategory}) => {
+export default ({category, onCreate, onToggleCategory, onToggleSubcategory, checked=false, onSelect=function(){}}) => {
 	const click = (e) => {
 		e.preventDefault()
 		onCreate()
@@ -27,6 +27,9 @@ export default ({category, onCreate, onToggleCategory, onToggleSubcategory}) => 
 	return (
 		<tr className={category.enabled ? null : "row-disabled"} style={{verticalAlign: 'middle'}}>
 			<td>
+				<input type="checkbox" checked={checked} onChange={onSelect.bind(this, category)}/>
+			</td>
+			<td>
 				{category.enabled ? 
 					<i onClick={toggleCategory} className="pointer fa fa-2x fa-toggle-on text-primary"></i> :
 					<i onClick={toggleCategory} className="pointer fa fa-2x fa-toggle-off text-muted"></i>}
@@ -34,7 +37,10 @@ export default ({category, onCreate, onToggleCategory, onToggleSubcategory}) => 
 			<td>{category.value}</td>
 			<td>
 				<ul className="list-unstyled">
-					{category.subcategories.map((subcategory, i) => {
+					{category.
+						subcategories.
+						sort( (sA, sB) => sA.value.localeCompare(sB.value) ).
+						map((subcategory, i) => {
 						return (
 							<li key={i}>
 								<Subcategory cat={category} sub={subcategory} />

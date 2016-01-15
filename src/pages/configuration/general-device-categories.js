@@ -9,75 +9,126 @@ class GeneralDeviceCategories extends React.Component {
 	constructor(props){
 		super(props)
 
-		this.displayName = 'GeneralDeviceCategories'
+		this.showSubcategoryModal = this.showSubcategoryModal.bind(this)
+		this.showCategoryModal    = this.showCategoryModal.bind(this)
+		this.onToggleCategory     = this.onToggleCategory.bind(this)
+		this.onAddCategory        = this.onAddCategory.bind(this)
+		this.selectCategory       = this.selectCategory.bind(this)
+		this.onAddSubcategory     = this.onAddSubcategory.bind(this)
+		this.toggleCategory       = this.toggleCategory.bind(this)
+		this.onClose              = this.onClose.bind(this)
+		this.onDelete             = this.onDelete.bind(this)
+
 		this.state = {
-			showSubcategoryModal     : false,
-			showCategoryModal        : false,
-			showToggleCategoryDialog : false,
-			category                 : null
+			showSubcategoryModal       : false,
+			showCategoryModal          : false,
+			showToggleCategoryDialog   : false,
+			showDeleteCategoriesDialog : false,
+			category                   : null,
+			categories                 : []
 		}
+	}
+
+	showSubcategoryModal(category) {
+		this.setState({category, showSubcategoryModal: true})
+	}
+
+	onAddSubcategory(subcategory){
+		this.props.onAddSubcategory(this.state.category.id, subcategory)
+		this.onClose()
+		
+	}
+
+	showCategoryModal() {
+		this.setState({ showCategoryModal: true })
+	}
+
+	onAddCategory(category){
+		this.props.onAddCategory(category)
+		this.onClose()
+	}
+
+	onToggleCategory(category){
+		this.setState({
+			showToggleCategoryDialog : true,
+			category                 : category
+		})
+	}
+
+	toggleCategory(){
+		this.props.onToggleCategory(this.state.category)
+		this.onClose()
+	}
+
+	selectCategory(category){
+		let categories;
+		const index = this.state.categories.indexOf(category)
+
+		if(index < 0){
+			categories = [...this.state.categories, category]
+		} else {
+			categories = [...this.state.categories.slice(0, index), ...this.state.categories.slice(index + 1)]
+		}
+
+		this.setState({ categories })
+	}
+	
+	onClose(){
+		this.setState({
+			showSubcategoryModal       : false,
+			showCategoryModal          : false,
+			showToggleCategoryDialog   : false,
+			showDeleteCategoriesDialog : false
+		})
+	}
+
+	onDelete(e){
+		e.preventDefault()
+		this.props.deleteCategoryHelpers(this.state.categories.map(c => c.id))
+		this.setState({categories: []})
+		this.onClose()
 	}
 
 	render(){
 		const {categories} = this.props
-		const spinner = (
-			<h2><i className="fa fa-spinner fa-spin"></i>{' Loading...'}</h2>
-		)
-		const showSubcategoryModal = (category) => {
-			this.setState({category, showSubcategoryModal: true})
-		}
-		const showCategoryModal = () => this.setState({
-			showCategoryModal: true
-		})
-		const onClose = () => this.setState({
-			showSubcategoryModal     : false,
-			showCategoryModal        : false,
-			showToggleCategoryDialog : false
-		})
-		const onToggleCategory = (category) => this.setState({
-			showToggleCategoryDialog : true,
-			category                 : category
-		})
-		const onAddSubcategory = (subcategory) => { 
-			this.props.onAddSubcategory(this.state.category.id, subcategory)
-			onClose()
-		}
-		const onAddCategory = (category) => {
-			this.props.onAddCategory(category)
-			onClose()
-		}
-		const toggleCategory = () => {
-			this.props.onToggleCategory(this.state.category)
-			onClose()
-		}
+		const spinner = <h2><i className="fa fa-spinner fa-spin"></i>{' Loading...'}</h2>
+		
 		const row = (category, i) => {
 			return (
 				<Tr
 					key={i}
 					category={category}
-					onCreate={showSubcategoryModal.bind(this, category)}
-					onToggleCategory={onToggleCategory.bind(this, category)}
+					checked={this.state.categories.indexOf(category) > -1}
+					onCreate={this.showSubcategoryModal.bind(this, category)}
+					onSelect={this.selectCategory.bind(this, category)}
+					onToggleCategory={this.onToggleCategory.bind(this, category)}
 					onToggleSubcategory={this.props.onToggleSubcategory}/>
 			)
 		}
 		const table = (
 			<table className="table table-hover table-striped">
 				<thead>
-					{thead}
+					<tr>
+						<th></th>
+						<th></th>
+						<th>
+							Categoría
+						</th>
+						<th>
+							Subcategoría
+						</th>
+					</tr>
 				</thead>
 				<tbody>
-					{categories.filter(c => c.enabled).map( row )}
-					{categories.filter(c => !c.enabled).map( row )}
+					{categories.
+						filter(c => c.enabled).
+						sort((c1, c2) => c1.value.localeCompare(c2.value)).
+						map( row )}
+					{categories.
+						filter(c => !c.enabled).
+						sort((c1, c2) => c1.value.localeCompare(c2.value)).
+						map( row )}
 				</tbody>
-				<tfoot>
-					<tr>
-						<td colSpan="3" className="text-center">
-							<BtnRowToolbar buttons={[
-								<AddRowButton onClick={showCategoryModal}/>
-							]}/>
-						</td>
-					</tr>
-				</tfoot>
 			</table>
 		)
 		
@@ -88,25 +139,50 @@ class GeneralDeviceCategories extends React.Component {
 					<strong>Categorías de Equipos</strong>
 				</h4>
 
+				<button
+					className="btn btn-danger btn-xs pull-right margin-bottom"
+					onClick={() => this.setState({showDeleteCategoriesDialog: true})}
+					disabled={this.state.categories.length === 0}
+				>
+					<i className="fa fa-trash"></i>
+				</button>
+				
+				<button
+					onClick={this.showCategoryModal}
+					className="btn btn-success btn-xs margin-bottom"
+				>
+					<i className="fa fa-plus"></i>{' Nueva Categoría'}
+				</button>
+
 				{categories.length === 0 ? spinner : table}
 
 				<DeviceCategoryModal
 					showModal={this.state.showSubcategoryModal}
-					onClose={onClose}
+					onClose={this.onClose}
 					category={this.state.category && this.state.category.value}
-					onAdd={onAddSubcategory}
+					onAdd={this.onAddSubcategory}
 				/>
 
 				<DeviceCategoryModal
 					showModal={this.state.showCategoryModal}
-					onClose={onClose}
-					onAdd={onAddCategory}
+					onClose={this.onClose}
+					onAdd={this.onAddCategory}
 				/>
 
 				<DeleteDialog
+					showModal={this.state.showDeleteCategoriesDialog}
+					closeModal={this.onClose}
+					confirmDel={this.onDelete}
+				>
+					<p className="text-center">
+						¿Esta seguro que desea eliminar las categorías seleccionadas?
+					</p>
+				</DeleteDialog>
+
+				<DeleteDialog
 					showModal={this.state.showToggleCategoryDialog}
-					closeModal={onClose}
-					confirmDel={toggleCategory}
+					closeModal={this.onClose}
+					confirmDel={this.toggleCategory}
 				>
 					<p className="text-center">
 						¿Esta seguro que desea 

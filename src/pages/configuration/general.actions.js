@@ -1,7 +1,28 @@
-import {CREATING_DEVICE_CATEGORY, TOGGLE_DEVICE_CATEGORY_SUCCESS, TOGGLE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_CATEGORY_SUCCESS, CREATE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_SUBCATEGORY_SUCCESS, CREATE_DEVICE_SUBCATEGORY_ERROR, FETCHING_DEVICE_CATEGORY_HELPERS, FETCH_DEVICE_CATEGORY_SUCCESS, FETCH_DEVICE_CATEGORY_ERROR} from '../../state/action-types.js'
+import {DELETE_DEVICE_CATEGORY_OPTIMISTICALLY, DELETE_DEVICE_CATEGORY_SUCCESS, DELETE_DEVICE_CATEGORY_ERROR, CREATING_DEVICE_CATEGORY, TOGGLE_DEVICE_CATEGORY_SUCCESS, TOGGLE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_CATEGORY_SUCCESS, CREATE_DEVICE_CATEGORY_ERROR, CREATE_DEVICE_SUBCATEGORY_SUCCESS, CREATE_DEVICE_SUBCATEGORY_ERROR, FETCHING_DEVICE_CATEGORY, FETCH_DEVICE_CATEGORY_SUCCESS, FETCH_DEVICE_CATEGORY_ERROR} from '../../state/action-types.js'
 import Rx from 'rx'
 import Parse from 'parse'
 import Helper from '../../models/helper.model.js'
+
+export function deleteDeviceCategoryHelpers(categoryIds){
+	return (dispatch, getState) => {
+		const categories = getState().general.categories.
+			filter(category => categoryIds.indexOf(category.id) === -1)
+
+		dispatch(deleteDeviceCategoryHelpersOptimistically(categories))
+
+		Rx.Observable.
+			fromArray(categoryIds).
+			map(categoryId => new Helper({id: categoryId})).
+			map(category => Rx.Observable.
+				fromPromise(category.destroy())
+			).
+			mergeAll().
+			subscribe(
+				result => dispatch(deleteDeviceCategoryHelpersSuccess(result)),
+				error  => dispatch(deleteDeviceCategoryHelpersError(error))
+			)
+	} 
+}
 
 export function toggleDeviceSubcategoryHelper(subcategory){
 	return (dispatch, getState) => {
@@ -36,7 +57,7 @@ export function toggleDeviceCategoryHelper(category){
 				error => dispatch(toggleDeviceCategoryError(error))
 			)
 
-		car.enabled = !cat.enabled
+		cat.enabled = !cat.enabled
 		dispatch(toggleDeviceCategorySuccess(categories))
 	}
 }
@@ -109,9 +130,29 @@ export function fetchDeviceCategoryHelpers(force=false){
 	}
 }
 
+export function deleteDeviceCategoryHelpersOptimistically(categories){
+	return {
+		type: DELETE_DEVICE_CATEGORY_OPTIMISTICALLY,
+		categories
+	}
+}
+
+export function deleteDeviceCategoryHelpersSuccess(result){
+	return {
+		type: DELETE_DEVICE_CATEGORY_SUCCESS
+	}
+}
+
+export function deleteDeviceCategoryHelpersError(error){
+	return {
+		type: DELETE_DEVICE_CATEGORY_ERROR,
+		error
+	}
+}
+
 export function fetchingDeviceCategoryHelpers(){
 	return {
-		type: FETCHING_DEVICE_CATEGORY_HELPERS
+		type: FETCHING_DEVICE_CATEGORY
 	}
 }
 
