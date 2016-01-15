@@ -1,32 +1,58 @@
 import React from 'react'
 import { BtnRowToolbar, EyeRowButton } from '../../components/buttons.js'
 
-export default ({category, onClick}) => {
+export default ({category, onCreate, onToggleCategory, onToggleSubcategory, onSelect=function(){}}) => {
 	const click = (e) => {
 		e.preventDefault()
-		onClick()
+		onCreate()
+	}
+
+	const toggleCategory = () => onToggleCategory(category)
+
+	const Subcategory = ({cat, sub}) => {
+		const toggleSubcategory = () => onToggleSubcategory(sub)
+		return (
+			<span onClick={toggleSubcategory}>
+				{cat.enabled? 
+					<a href="javascript:void(0);" className="text-primary">
+						{sub.enabled ? sub.value : <strike className="text-muted">{sub.value}</strike>}
+					</a> :
+					<span className="text-muted">
+						{sub.enabled ? sub.value : <strike className="text-muted">{sub.value}</strike>}
+					</span>}
+			</span>
+		)
 	}
 
 	return (
-		<tr style={{verticalAlign: 'middle'}}>
+		<tr className={category.enabled ? null : "row-disabled"} style={{verticalAlign: 'middle'}}>
 			<td>
-				<BtnRowToolbar 
-					buttons={[<EyeRowButton />]}
-				/>
+				<input type="checkbox" checked={category.selected} onChange={onSelect}/>
+			</td>
+			<td>
+				{category.enabled ? 
+					<i onClick={toggleCategory} className="pointer fa fa-2x fa-toggle-on text-primary"></i> :
+					<i onClick={toggleCategory} className="pointer fa fa-2x fa-toggle-off text-muted"></i>}
 			</td>
 			<td>{category.value}</td>
 			<td>
 				<ul className="list-unstyled">
-					{category.subcategories.map((subcategory, i) => {
+					{category.
+						subcategories.
+						sort( (sA, sB) => sA.value.localeCompare(sB.value) ).
+						map((subcategory, i) => {
 						return (
 							<li key={i}>
-								<a href="#" className="text-primary">{subcategory.value}</a>
+								<Subcategory cat={category} sub={subcategory} />
 							</li>
 						)
 					})}
+					{category.enabled ?
 					<li style={{borderTop: '1px solid #DCDCDC'}}>
 						<a href="#" onClick={click} className="text-success">Nueva Subcategoría</a>
 					</li>
+					:
+					null}
 				</ul>
 			</td>
 		</tr>

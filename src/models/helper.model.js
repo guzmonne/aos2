@@ -14,8 +14,17 @@ const Helper = Parse.Object.extend('Helper', {}, {
 	subcategory(parent, value){
 		return new Helper({
 			key: 'subcategory',
+			enabled: true,
 			value,
 			parent
+		})
+	},
+
+	category(value){
+		return new Helper({
+			key: 'category',
+			enabled: true,
+			value
 		})
 	}
 });
