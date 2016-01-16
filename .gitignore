@@ -1,4 +1,4 @@
 node_modules/
 public/
 .parse/
-cloud/.parse*
+server/.parse*
