@@ -1,4 +1,5 @@
 var getConfig = require('hjs-webpack')
+var path = require('path')
 
 var config = getConfig({
 	in: 'src/app.js',
@@ -17,5 +18,10 @@ var config = getConfig({
 		}
 	}
 });
+
+config.resolve.root = path.join(__dirname, 'src')
+config.resolve.alias = {
+	parse: 'parse.js'
+}
 
 module.exports = config

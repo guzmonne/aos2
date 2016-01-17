@@ -3,6 +3,7 @@ import Rx from 'rx'
 import Parse from 'parse'
 import _ from 'lodash'
 import Helper from '../../models/helper.model.js'
+import utils from '../../utilities/general-actions.utils.js'
 
 export function deleteDeviceCategoryHelpers(){
 	return (dispatch, getState) => {
@@ -117,32 +118,17 @@ export function createDeviceCategoryHelper(value){
 export function fetchDeviceCategoryHelpers(force=false){
 	return (dispatch, getState) => {
 		dispatch(fetchingDeviceCategoryHelpers())
-		const categoriesLastFetch = getState().general.categoriesLastFetch
-		const msSinceLastFetch = (date) => new Date().getTime() - date.getTime()
 		
-		if (!force && categoriesLastFetch && msSinceLastFetch(categoriesLastFetch) < 60000)
+		const categoriesLastFetch = getState().general.categoriesLastFetch
+		
+		if (!force && categoriesLastFetch && utils.msSinceLastFetch(categoriesLastFetch) < 60000)
 			return
-
-		Rx.Observable.
-			fromPromise( (new Parse.Query(Helper)).equalTo('key', 'category').find() ).
-			flatMap(categories => categories.map(category => Rx.Observable.
-				fromPromise( (new Parse.Query(Helper)).equalTo('parent', category.id).find() ).
-				map(subcategories => Object.assign(
-					{},
-					category.attributes,
-					{id: category.id, subcategories: subcategories.map(s => Object.assign(
-						{},
-						s.attributes,
-						{id: s.id}
-					))}
-				))
-			)).
-			mergeAll().
-			reduce( (categories, category) => [...categories, category], [] ).
+	
+		utils.fetchCategoriesObserver.
 			subscribe(
 				categories => dispatch(fetchDeviceCategorySuccess(categories)),
 				error    => dispatch(fetchDeviceCategoryError(error))
-			)
+			)		
 	}
 }
 
