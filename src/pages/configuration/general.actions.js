@@ -10,15 +10,12 @@ export function deleteDeviceCategoryHelpers(){
 		const categories = getState().general.categories.filter(c => c.selected)
 		const subcategories = [].concat(...categories.map(c => c.subcategories))
 
-		console.log([...categories, ...subcategories])
-
 		dispatch(deleteDeviceCategoryHelpersOptimistically(getState().general.categories.
 			filter(c => !c.selected)))
 
-		Rx.Observable.
-			fromArray( [...categories, ...subcategories] ).
-			map(category => Rx.Observable.fromPromise( (new Helper({id: category.id})).destroy() ) ).
-			mergeAll().
+		utils.
+			observables.
+			deleteHelpers([...categories, ...subcategories]).
 			subscribe(
 				result => dispatch(deleteDeviceCategoryHelpersSuccess(result)),
 				error  => dispatch(deleteDeviceCategoryHelpersError(error))
@@ -30,8 +27,9 @@ export function toggleDeviceSubcategoryHelper(subcategory){
 	return (dispatch, getState) => {
 		const categories = [...getState().general.categories]
 
-		Rx.Observable.
-			fromPromise( (new Helper({id: subcategory.id})).save('enabled', !subcategory.enabled) ).
+		utils.
+			observables.
+			toggleHelper(subcategory).
 			subscribe(
 				subcategory => null,
 				error => dispatch(toggleDeviceCategoryError(error))
@@ -52,8 +50,9 @@ export function toggleDeviceCategoryHelper(category){
 		const categories = [...getState().general.categories]
 		const cat = categories.find(c => c.id === category.id)
 
-		Rx.Observable.
-			fromPromise( (new Helper({id: category.id})).save('enabled', !category.enabled) ).
+		utils.
+			observables.
+			toggleHelper(category).
 			subscribe(
 				category => null,
 				error => dispatch(toggleDeviceCategoryError(error))
@@ -71,14 +70,13 @@ export function createDeviceSubcategoryHelper(categoryId, value){
 		let categories    = [...getState().general.categories]
 		const category    = categories.find(c => c.id === categoryId)
 
-		console.log(_id)
-
 		category.subcategories = [...category.subcategories, Object.assign({}, subcategory.attributes, {_id: _id})]
 
 		dispatch(createDeviceSubcategorySuccess(categories))
 
-		Rx.Observable.
-			fromPromise(subcategory.save()).
+		utils.
+			observables.
+			createDeviceSubcategory(subcategory).
 			subscribe(
 				(subcategory) => {
 					const categories = [...getState().general.categories]
@@ -88,12 +86,9 @@ export function createDeviceSubcategoryHelper(categoryId, value){
 						find(s => s._id === _id).
 						id = subcategory.id
 
-					console.log(categories);
-
 					dispatch(createDeviceSubcategorySuccess(categories))
-
 				},
-				(error)       => dispatch(createDeviceSubcategoryError(error))
+				(error) => dispatch(createDeviceSubcategoryError(error))
 			)
 	}
 }
@@ -104,9 +99,9 @@ export function createDeviceCategoryHelper(value){
 
 		dispatch(creatingDeviceCategory())
 
-		Rx.Observable.
-			fromPromise(category.save()).
-			map(category => Object.assign({}, category.attributes, {id: category.id, subcategories: []})).
+		utils.
+			observables.
+			createDeviceCategory(category).
 			subscribe(
 				category => dispatch(createDeviceCategorySuccess( [...getState().general.categories, category] )),
 				error => dispatch(createDeviceCategoryError(error))
@@ -120,11 +115,13 @@ export function fetchDeviceCategoryHelpers(force=false){
 		dispatch(fetchingDeviceCategoryHelpers())
 		
 		const categoriesLastFetch = getState().general.categoriesLastFetch
+		const {msSinceLastFetch}  = utils.helpers
 		
-		if (!force && categoriesLastFetch && utils.msSinceLastFetch(categoriesLastFetch) < 60000)
-			return
+		if (!force && categoriesLastFetch && msSinceLastFetch(categoriesLastFetch) < 60000) return
 	
-		utils.fetchCategoriesObserver.
+		utils.
+			observables.
+			fetchDeviceCategories.
 			subscribe(
 				categories => dispatch(fetchDeviceCategorySuccess(categories)),
 				error    => dispatch(fetchDeviceCategoryError(error))
