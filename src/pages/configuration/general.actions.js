@@ -136,11 +136,11 @@ export function fetchDeviceCategoryHelpers(force=false){
 		const categoriesLastFetch = getState().general.categoriesLastFetch
 		const {msSinceLastFetch}  = utils.helpers
 		
-		if (!force && categoriesLastFetch && msSinceLastFetch(categoriesLastFetch) < 60000) return
+		if (!force && categoriesLastFetch && msSinceLastFetch(categoriesLastFetch) < 1000) return
 	
 		utils.
 			observables.
-			fetchDeviceCategories.
+			fetchDeviceCategories().
 			subscribe(
 				categories => dispatch(fetchDeviceCategorySuccess(categories)),
 				error    => dispatch(fetchDeviceCategoryError(error))

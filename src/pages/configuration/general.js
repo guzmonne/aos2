@@ -23,7 +23,7 @@ class GeneralConfig extends React.Component {
 	}
 
 	render(){
-		const {categories} = this.props.general
+		const {categories, isFetchingCategories} = this.props.general
 
 		return (
 			<div className="container">
@@ -39,6 +39,8 @@ class GeneralConfig extends React.Component {
 							deleteCategoryHelpers={this.props.deleteDeviceCategoryHelpers}
 							deleteSubcategoryHelper={this.props.deleteDeviceSubcategoryHelper}
 							toggleCategorySelection={this.props.toggleDeviceCategorySelectionHelper}
+							updateCategories={this.props.fetchDeviceCategoryHelpers}
+							updatingCategories={isFetchingCategories}
 						/>
 
 					</div>

@@ -134,6 +134,16 @@ class GeneralDeviceCategories extends React.Component {
 				</h4>
 
 				<button
+					onClick={this.props.updateCategories}
+					className="btn btn-primary btn-xs btn-outline margin-bottom"
+					disabled={this.props.updatingCategories}
+				>
+					<i className={this.props.updatingCategories ? "fa fa-refresh fa-spin":"fa fa-refresh"}></i>
+				</button>
+
+				{' '}
+
+				<button
 					className="btn btn-danger btn-xs btn-outline pull-right margin-bottom"
 					onClick={() => this.setState({showDeleteCategoriesDialog: true})}
 					disabled={categories.filter(c => c.selected).length === 0}

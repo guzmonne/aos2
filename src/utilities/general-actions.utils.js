@@ -5,7 +5,7 @@ import Parse from 'parse'
 const msSinceLastFetch = (date) => new Date().getTime() - date.getTime()
 
 /* OBSERVABLES */
-const fetchDeviceCategories = Rx.Observable.
+const fetchDeviceCategories = () => Rx.Observable.
 	fromPromise(Parse.Cloud.run('categories')).
 	map(results => {
 		return results.map(result => Object.assign(
