@@ -17,13 +17,16 @@ class GeneralDeviceCategories extends React.Component {
 		this.toggleCategory       = this.toggleCategory.bind(this)
 		this.onClose              = this.onClose.bind(this)
 		this.onDelete             = this.onDelete.bind(this)
+		this.onDeleteSubcategory  = this.onDeleteSubcategory.bind(this)
 
 		this.state = {
-			showSubcategoryModal       : false,
-			showCategoryModal          : false,
-			showToggleCategoryDialog   : false,
-			showDeleteCategoriesDialog : false,
-			category                   : null
+			showSubcategoryModal        : false,
+			showCategoryModal           : false,
+			showToggleCategoryDialog    : false,
+			showDeleteCategoriesDialog  : false,
+			showDeleteSubcategoryDialog : false,
+			category                    : null,
+			subcategory                 : null
 		}
 	}
 
@@ -59,16 +62,24 @@ class GeneralDeviceCategories extends React.Component {
 	
 	onClose(){
 		this.setState({
-			showSubcategoryModal       : false,
-			showCategoryModal          : false,
-			showToggleCategoryDialog   : false,
-			showDeleteCategoriesDialog : false
+			showSubcategoryModal        : false,
+			showCategoryModal           : false,
+			showToggleCategoryDialog    : false,
+			showDeleteCategoriesDialog  : false,
+			showDeleteSubcategoryDialog : false,
+			subcategory                 : null
 		})
 	}
 
 	onDelete(e){
 		e.preventDefault()
 		this.props.deleteCategoryHelpers()
+		this.onClose()
+	}
+
+	onDeleteSubcategory(e){
+		e.preventDefault()
+		this.props.deleteSubcategoryHelper(this.state.subcategory)
 		this.onClose()
 	}
 
@@ -82,6 +93,7 @@ class GeneralDeviceCategories extends React.Component {
 					key={i}
 					category={category}
 					onCreate={this.showSubcategoryModal.bind(this, category)}
+					onDelete={subcategory => this.setState({showDeleteSubcategoryDialog: true, subcategory: subcategory})}
 					onSelect={this.props.toggleCategorySelection.bind(this, category)}
 					onToggleCategory={this.onToggleCategory.bind(this, category)}
 					onToggleSubcategory={this.props.onToggleSubcategory}/>
@@ -122,16 +134,17 @@ class GeneralDeviceCategories extends React.Component {
 				</h4>
 
 				<button
-					className="btn btn-danger btn-xs pull-right margin-bottom"
+					className="btn btn-danger btn-xs btn-outline pull-right margin-bottom"
 					onClick={() => this.setState({showDeleteCategoriesDialog: true})}
 					disabled={categories.filter(c => c.selected).length === 0}
 				>
 					<i className="fa fa-trash"></i>
+					{' Eliminar'}
 				</button>
 				
 				<button
 					onClick={this.showCategoryModal}
-					className="btn btn-success btn-xs margin-bottom"
+					className="btn btn-success btn-outline btn-xs margin-bottom"
 				>
 					<i className="fa fa-plus"></i>{' Nueva Categoría'}
 				</button>
@@ -158,6 +171,16 @@ class GeneralDeviceCategories extends React.Component {
 				>
 					<p className="text-center">
 						¿Esta seguro que desea eliminar las categorías seleccionadas?
+					</p>
+				</DeleteDialog>
+
+				<DeleteDialog
+					showModal={this.state.showDeleteSubcategoryDialog}
+					closeModal={this.onClose}
+					confirmDel={this.onDeleteSubcategory}
+				>
+					<p className="text-center">
+						¿Esta seguro que desea eliminar esta subcategoría?
 					</p>
 				</DeleteDialog>
 

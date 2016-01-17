@@ -5,6 +5,25 @@ import _ from 'lodash'
 import Helper from '../../models/helper.model.js'
 import utils from '../../utilities/general-actions.utils.js'
 
+export function deleteDeviceSubcategoryHelper(subcategory){
+	return (dispatch, getState) => {
+		const categories = [...getState().general.categories]
+		const category = categories.find( c => c.id === subcategory.parent )
+
+		category.subcategories = category.subcategories.filter( s => s.id !== subcategory.id )
+
+		dispatch( deleteDeviceCategoryHelpersOptimistically(categories) )
+
+		utils.
+			observables.
+			deleteHelper(subcategory).
+			subscribe(
+				result => dispatch( deleteDeviceCategoryHelpersSuccess() ),
+				error  => dispatch( deleteDeviceCategoryHelpersError() )
+			)
+	}
+}
+
 export function deleteDeviceCategoryHelpers(){
 	return (dispatch, getState) => {
 		const categories = getState().general.categories.filter(c => c.selected)
