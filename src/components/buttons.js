@@ -22,7 +22,7 @@ export function AddRowButton(props) {
 	)
 }
 
-export function EditRowButton({id, to}) {
+export function EditRowButton({to}) {
 	return (
 		<OverlayTrigger placement="top" overlay={editTooltip}>
 			<Link to={to} className="btn btn-warning btn-with-sup btn-outline">

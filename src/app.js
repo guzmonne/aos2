@@ -9,8 +9,10 @@ import { render } from 'react-dom'
 import App from './main.app.js'
 import Parse from 'parse'
 import Helper from './models/helper.model.js'
+import Device from './models/device.model.js'
 
 window.Parse = Parse;
 window.Helper = Helper;
+window.Device = Device;
 
 render(<App />, document.getElementById('root'))

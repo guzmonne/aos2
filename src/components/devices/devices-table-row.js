@@ -12,14 +12,14 @@ export const Tr = ({model, onDelete}) => {
 	return (
 		<tr className="animated fadeIn">
 			<td>{model.get('brand')}</td>
-			<td>{model.get('family')}</td>
-			<td>{model.get('subfamily')}</td>
+			<td>{model.get('category')}</td>
+			<td>{model.get('subcategory')}</td>
 			<td>{model.get('model')}</td>
 			<td>{model.get('description')}</td>
 			<td className="text-center">
 				<BtnRowToolbar buttons={[
-					<EditButton tooltip={editTooltip} id={model.id}/>,
-					<DeleteButton tooltip={deleteTooltip} onDelete={del}/>
+					<EditRowButton to={`/devices/edit/${model.id}`}/>,
+					<DeleteRowButton />
 				]}/>
 			</td>
 		</tr>
