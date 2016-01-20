@@ -9,13 +9,10 @@ import { render } from 'react-dom'
 import App from './main.app.js'
 import Parse from 'parse'
 import Helper from './models/helper.model.js'
-
-Parse.initialize(
-	'JFX5XaxaUT3F9NvmgjeeTqsPvKXW0Eap9PSZ5hpM',
-	'recvEwie6fl4VtZ5K2jPi7r2w4PYlbZWPG6r2Rhc'
-);
+import Device from './models/device.model.js'
 
 window.Parse = Parse;
 window.Helper = Helper;
+window.Device = Device;
 
 render(<App />, document.getElementById('root'))

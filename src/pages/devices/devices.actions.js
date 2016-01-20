@@ -2,7 +2,35 @@ import { RESET_ACTIVE_DEVICE, LOADING_DEVICES, DEVICE_DELETE_SUCCESS, DEVICE_DEL
 import { pushPath } from 'redux-simple-router'
 import Parse from 'parse'
 import Device from '../../models/device.model.js'
-import _ from 'lodash'
+
+export function createDevice(rawData){
+	return (dispatch) => {
+
+		dispatch( loadingDevices() )
+
+		Device.
+			create(rawData).
+			subscribe(
+				device => dispatch( createDeviceSuccess(device) ),
+				error  => dispatch( createDeviceError(error) )
+			)
+
+	}
+}
+
+export function createDeviceSuccess(device){
+	return {
+		type: DEVICE_CREATE_SUCCESS,
+		device
+	}
+}
+
+export function createDeviceError(error){
+	return {
+		type: DEVICE_CREATE_ERROR,
+		error
+	}
+}
 
 export function deleteClient(deviceId){
 	return (dispatch, getState) => {

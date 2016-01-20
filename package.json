@@ -8,7 +8,7 @@
     "prebuild": "rm -r public",
     "build": "set NODE_ENV=production&& webpack",
     "start": "webpack-dev-server",
-    "cloud": "cd cloud&& parse deploy",
+    "cloud": "cd server&& parse deploy",
     "surge": "set NODE_ENV=production&& webpack&& cd public&& surge"
   },
   "repository": {
@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/guzmonne/aos2#readme",
   "dependencies": {
+    "chai": "^3.4.1",
     "expect": "^1.13.4",
     "font-awesome": "^4.5.0",
     "hjs-webpack": "^6.0.0",
@@ -61,10 +62,12 @@
     "imports-loader": "^0.6.5",
     "json-loader": "^0.5.4",
     "karma": "^0.13.16",
+    "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.2",
     "karma-cli": "^0.1.2",
     "karma-mocha": "^0.2.1",
     "karma-sourcemap-loader": "^0.3.6",
+    "karma-story-reporter": "^0.3.1",
     "karma-webpack": "^1.7.0",
     "mocha": "^2.3.4",
     "postcss-loader": "^0.8.0",

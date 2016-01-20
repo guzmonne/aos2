@@ -31,17 +31,6 @@ describe('Login Actions', () => {
 
 	describe('loggingInUser', () => {
 		it('shold return a correct action', () => {
-			const actual = loginSuccess();
-			const expected = {
-				type: 'LOGIN_SUCCESS'
-			}
-
-			expect(actual).toEqual(expected)
-		})
-	})
-
-	describe('loggingInUser', () => {
-		it('shold return a correct action', () => {
 			const actual = loginError(false);
 			const expected = {
 				type: 'LOGIN_ERROR',

@@ -1,6 +1,10 @@
 node_modules/
 public/
 .parse/
+<<<<<<< HEAD
 cloud/.parse*
 .idea/
 npm-debug.log
+=======
+server/.parse*
+>>>>>>> 1761d1992b9517e72dec33a717fce6e1807870a2

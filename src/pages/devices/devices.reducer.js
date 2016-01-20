@@ -41,6 +41,20 @@ export default function devicesReducer (state=defaultState, action){
 				state,
 				{error: action.error, loading: false}
 			)
+		case DEVICE_CREATE_SUCCESS:
+			return Object.assign(
+				{},
+				state,
+				{loading: false, error: null},
+				{collection: [...state.collection, action.device]},
+				{activeDevice: action.device}
+			)
+		case DEVICE_CREATE_ERROR:
+			return Object.assign(
+				{},
+				state,
+				{loading: false, error: action.error}
+			)
 		default:
 			return state
 

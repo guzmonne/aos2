@@ -1,3 +1,12 @@
+.show-on-hover
+	display none
+	opacity 0.3
+	&:hover
+		opacity 1
+
+.hidden-content:hover > .show-on-hover
+	display inline
+
 .float-right
 	float right
 	
@@ -19,5 +28,10 @@
 	
 tr.row-disabled
 	background-color #E0E0E0 !important
-	opacity 0.5
-	
+	a, i, text, span.text-muted 
+		opacity 0.5
+	td > input
+		opacity 1
+		color red
+	&:hover
+		background-color #DCDCDC !important
